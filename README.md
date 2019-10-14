@@ -1,6 +1,6 @@
-# Express Boilerplate
+# Recipeak API
 
-This is a boilerplate used for starting new express projects.
+A friendly recipe app.
 
 ## Set up
 
@@ -24,3 +24,9 @@ Run the tests `npm test`
 ## Deploying
 
 When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+
+## Log
+
+### 2019-10-14
+
+Beginning to flesh out the server with all the basic installations and data structures. Moving to client side.
