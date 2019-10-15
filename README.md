@@ -29,4 +29,10 @@ When your new project is ready for deployment, add a new Heroku application with
 
 ### 2019-10-14
 
-Beginning to flesh out the server with all the basic installations and data structures. Moving to client side.
+Beginning to flesh out the server with all the basic installations and data structures. Running into an issue with postgres where the pg server isn't being read. Moving to client side for a few hours.
+
+### 2019-10-14
+
+This corrected itself...
+
+Got brushed up on the INTERVAL data type [here](http://www.postgresqltutorial.com/postgresql-interval/).

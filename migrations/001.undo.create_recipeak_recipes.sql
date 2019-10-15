@@ -1,0 +1,1 @@
+IF EXISTS DROP TABLE recipes;
