@@ -1,29 +1,29 @@
 const uuid = require('uuid');
 
-// //Staging users...
-// const users = [
-//   {
-//     id: uuid(),
-//     first_name: 'Jim',
-//     last_name: 'Fakeman',
-//     username: 'SuperJim',
-//     date_created: new Date('2029-01-22T16:28:32.615Z')
-//   },
-//   {
-//     id: uuid(),
-//     first_name: 'Marnie',
-//     last_name: 'Falsehood',
-//     username: 'MiddleMarno',
-//     date_created: new Date('2029-01-22T16:28:32.615Z')
-//   },
-//   {
-//     id: uuid(),
-//     first_name: 'Pat',
-//     last_name: 'CooksALot',
-//     username: 'superpat022',
-//     date_created: new Date('2029-01-22T16:28:32.615Z')
-//   }
-// ];
+//Staging users...
+const users = [
+  {
+    id: uuid(),
+    first_name: 'Jim',
+    last_name: 'Fakeman',
+    username: 'SuperJim',
+    date_created: new Date('2029-01-22T16:28:32.615Z')
+  },
+  {
+    id: uuid(),
+    first_name: 'Marnie',
+    last_name: 'Falsehood',
+    username: 'MiddleMarno',
+    date_created: new Date('2029-01-22T16:28:32.615Z')
+  },
+  {
+    id: uuid(),
+    first_name: 'Pat',
+    last_name: 'CooksALot',
+    username: 'superpat022',
+    date_created: new Date('2029-01-22T16:28:32.615Z')
+  }
+];
 
 function makeRecipesArray() {
   return [
@@ -36,7 +36,7 @@ function makeRecipesArray() {
       ],
       instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
       prep_time: '30 minutes',
-      yield: 6,
+      servings: 6,
       date_created: new Date('2029-01-22T16:28:32.615Z')
     },
     {
@@ -48,7 +48,7 @@ function makeRecipesArray() {
       ],
       instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
       prep_time: '30 minutes',
-      yield: 8,
+      servings: 8,
       date_created: new Date('2029-01-22T16:28:32.615Z')
     },
     {
@@ -60,7 +60,7 @@ function makeRecipesArray() {
       ],
       instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
       prep_time: '30 minutes',
-      yield: 3,
+      servings: 3,
       date_created: new Date('2029-01-22T16:28:32.615Z')
     }
   ];
@@ -74,7 +74,7 @@ function makeExpectedRecipe(recipe) {
     ingredients: recipe.ingredients,
     instructions: recipe.instructions,
     prep_time: recipe.prep_time,
-    yield: recipe.yield,
+    servings: recipe.servings,
     date_created: recipe.date_created.toISOString()
   };
 }
@@ -89,7 +89,7 @@ function makeMaliciousRecipe() {
     ],
     instructions: '<img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);"><em>Do the things!</em>',
     prep_time: '30 minutes',
-    yield: 3,
+    servings: 3,
     date_created: new Date('2029-01-22T16:28:32.615Z')
   };
   const expectedArticle = {
