@@ -35,16 +35,16 @@ When your new project is ready for deployment, add a new Heroku application with
 
 ## Log
 
+### 2019-10-16
+
+- It occurred to me this morning - users should be separate from authors, because you might want to put up recipes from outside sources!! Must keep this in mind - there should be a default option that makes the author the user, and another that allows you to enter an author name.
+
+- A long fight here with frontend. Started sketching out a bunch of the routes and some of the testing. Look forward to implementing the helpers and having valid tests for the endpoints. Ending the night by writing some scripts to expedite seeding/unseeding for faster migration testing. Running into some issues with testing not coming out as I wanted, but got some fixes done on it.
+
 ### 2019-10-14
 
 Beginning to flesh out the server with all the basic installations and data structures. Running into an issue with postgres where the pg server isn't being read. Moving to client side for a few hours.
 
-### 2019-10-14
-
 This corrected itself...
 
 Got brushed up on the INTERVAL data type [here](http://www.postgresqltutorial.com/postgresql-interval/).
-
-### 2019-10-16
-
-A long fight here with frontend. Started sketching out a bunch of the routes and some of the testing. Look forward to implementing the helpers and having valid tests for the endpoints. Ending the night by writing some scripts to expedite seeding/unseeding for faster migration testing.
