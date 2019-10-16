@@ -36,3 +36,7 @@ Beginning to flesh out the server with all the basic installations and data stru
 This corrected itself...
 
 Got brushed up on the INTERVAL data type [here](http://www.postgresqltutorial.com/postgresql-interval/).
+
+### 2019-10-16
+
+A long fight here with frontend. Started sketching out a bunch of the routes and some of the testing. Look forward to implementing the helpers and having valid tests for the endpoints.
