@@ -21,6 +21,14 @@ Start nodemon for the application `npm run dev`
 
 Run the tests `npm test`
 
+Migrations `npm run migrate`, `npm run migrate:test`; append with step number (eg, `npm run migrate -- 0`)
+
+Seed Recipe Api `seed:api` ----- this is alias for (`psql -U recipeak -d recipeak-api -f ./seeds/seed.recipes_table.sql`)*
+
+Truncate Recipe Api `unseed:api` ----- this is alias for `psql -U recipeak -d recipeak-api -f ./seeds/trunc.recipes_table.sql`*
+
+*In package.json for these scripts, you may replace fields `recipeak` and `recipeak-api` with preferred Postgres user and database.
+
 ## Deploying
 
 When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
@@ -39,4 +47,4 @@ Got brushed up on the INTERVAL data type [here](http://www.postgresqltutorial.co
 
 ### 2019-10-16
 
-A long fight here with frontend. Started sketching out a bunch of the routes and some of the testing. Look forward to implementing the helpers and having valid tests for the endpoints.
+A long fight here with frontend. Started sketching out a bunch of the routes and some of the testing. Look forward to implementing the helpers and having valid tests for the endpoints. Ending the night by writing some scripts to expedite seeding/unseeding for faster migration testing.
