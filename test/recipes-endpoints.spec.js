@@ -19,4 +19,14 @@ describe('Recipes Endpoints', () => {
 
   afterEach('cleanup', () => db('bookmarks').truncate());
 
+  describe('GET /api/recipes', () => {
+    context('Given no recipes', () => {
+      it('responds with 200 and an empty list', () => {
+        return supertest(app)
+          .get('api/articles')
+          .expect(200, []);
+      });
+    });
+  });
+
 });

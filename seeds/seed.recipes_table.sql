@@ -29,7 +29,7 @@ VALUES
     5
   ),
   (
-    'Easy Baked Ribs Recipe',
+    'Easy Baked Ribs',
     'Adam',
     '{"2 to 2 1/2 lbs baby back pork ribs", "Salt and black pepper", "1 tbsp olive oil", "1/4 cup finely diced onion", "1/2 tsp ground cumin", "1/2 cup ketchup", "1 tbsp hot chili sauce", "2 tbsp light brown sugar", "1 tbsp apple cider vinegar", "Salt and ground pepper, to taste"}',
     'Heat oven to 275 degrees Fahrenheit (135C). If the ribs still have the thin membrane covering the back of the rack, remove it. See how in the notes section below. Season both sides of the ribs with a generous amount of salt and pepper then place, meat-side up, into a large roasting pan or rimmed baking sheet. (It may be necessary to cut the ribs in half in order for them to fit into the pan). Cover the pan or baking sheet tightly with aluminum foil, and then bake until the meat falls easily from the bones, 3 to 4 hours.While the ribs bake, make the barbecue sauce. Heat the olive oil in a saucepan over medium heat. Add the onions and cook until soft and translucent, 5 to 8 minutes. Stir in the cumin and cook for an additional 30 seconds. Add the ketchup, hot chili sauce, brown sugar, and apple cider vinegar. Stir to combine, season with salt then cook for 2 minutes. Set aside in preparation for the ribs to finish roasting. Remove the ribs from the oven, discard the aluminum foil and generously brush both sides with barbecue sauce. Optional: Move an oven rack near to the top of the oven. Turn broiler to high and broil the ribs for 3-4 minutes, just until the barbecue sauce begins to caramelize. (Keep a close eye on the ribs while they broil so they the sauce does not burn.)',

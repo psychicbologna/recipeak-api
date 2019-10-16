@@ -10,7 +10,8 @@ const serializeRecipes = recipe => ({
   ingredients: recipe.ingredients,
   instructions: recipe.instructions,
   prep_time: recipe.prep_time,
-  yield: recipe.yield
+  yield: recipe.yield,
+  date_created: recipe.date_created
 })
 
 recipesRouter
