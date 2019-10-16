@@ -4,7 +4,7 @@ const knex = require('knex'),
 
 describe('Recipes Endpoints', function () {
   let db;
-  console.dir(helpers);
+  // console.dir(helpers);
 
   const {
     testRecipes

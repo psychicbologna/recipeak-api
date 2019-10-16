@@ -10,10 +10,11 @@ const serializeRecipes = recipe => ({
   author: recipe.author,
   ingredients: recipe.ingredients,
   instructions: recipe.instructions,
-  prep_time: recipe.prep_time,
+  //TODO figure out how to structure the prep time, do I need a helper function here?
+  prep_time: recipe.prep_time.minutes + " minutes",
   yield: recipe.yield,
   date_created: recipe.date_created
-})
+});
 
 recipesRouter
   .route('/')
