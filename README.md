@@ -27,9 +27,11 @@ Seed Recipe Api `seed:api` ----- this is alias for (`psql -U recipeak -d recipea
 
 Truncate Recipe Api `unseed:api` ----- this is alias for `psql -U recipeak -d recipeak-api -f ./seeds/trunc.recipes_table.sql`*
 
-Truncate Recipe Test DB `unseed:test` ----- this is alias for `psql -U recipeak -d recipeak-api-test -f ./seeds/trunc.recipes_table.sql`*
+Truncate Recipe Test DB `unseed:test` ----- this is alias for `psql -U recipeak -d recipeak-api-test -f ./seeds/trunc.recipes_table.sql`**
 
-*In package.json for these scripts, you may replace fields `recipeak` and `recipeak-api` with preferred Postgres user and database.
+\* In package.json for these scripts, you may replace fields `recipeak` and `recipeak-api` with preferred Postgres user and database.
+
+\** Truncate might be useful when the test database is accidentally populated.
 
 ## Deploying
 
@@ -37,9 +39,13 @@ When your new project is ready for deployment, add a new Heroku application with
 
 ## Log
 
+![Log Lady Does Not Judge](./loglady.gif)
+
+To update, `npm run devlog`
+
 ### 2019-10-16
 
-- Migrating users in, kept separate from authors. Beginning to work in protected endpoints as well. Testing is working out okay. Interval function?
+- Migrating users in, kept separate from authors. Beginning to work in protected endpoints as well. Testing is working out okay. Interval function? Also added a log script to update README.md, will maybe add more for other sections of this file. //TODO //TODO //TODO
 
 - It occurred to me this morning - users should be separate from authors, because you might want to put up recipes from outside sources!! Must keep this in mind - there should be a default option that makes the author the user, and another that allows you to enter an author name.
 
