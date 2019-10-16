@@ -1,9 +1,13 @@
 const knex = require('knex'),
-  { makeRecipesArray, makeMaliciousRecipe } = require('../recipes.fixtures'),
-  app = require('../src/app')
+  app = require('../src/app'),
+  helpers = require('../test/test-helpers');
 
-describe('Recipes Endpoints', () => {
+describe('Recipes Endpoints', function () {
   let db;
+
+  const {
+    testRecipes
+  } = helpers.makeRecipesFixtures();
 
   before('make knex instance', () => {
     db = knex({
@@ -15,18 +19,38 @@ describe('Recipes Endpoints', () => {
 
   after('disconnect from db', () => db.destroy());
 
-  before('cleanup', () => db('bookmarks').truncate());
+  before('cleanup', () => db('recipes').truncate());
 
-  afterEach('cleanup', () => db('bookmarks').truncate());
+  afterEach('cleanup', () => db('recipes').truncate());
 
   describe('GET /api/recipes', () => {
-    context('Given no recipes', () => {
+    context('Given no recipes in database', () => {
       it('responds with 200 and an empty list', () => {
         return supertest(app)
-          .get('api/articles')
+          .get('/api/articles')
           .expect(200, []);
       });
     });
   });
 
+  context('Given there are recipes in database', () => {
+    beforeEach('insert recipes', () => {
+      helpers.seedRecipesTables(
+        db,
+        testRecipes
+      );
+    });
+
+    it('responds with 200 and all of the recipes', () => {
+      const expectedRecipes = testRecipes.map(recipe => (
+        helpers.makeExpectedRecipe(
+          recipe
+        )
+      )
+      );
+      return supertest(app)
+        .get('/api/recipes')
+        .expect(200, expectedRecipes);
+    });
+  });
 });
