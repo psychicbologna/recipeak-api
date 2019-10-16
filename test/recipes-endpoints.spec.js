@@ -4,6 +4,7 @@ const knex = require('knex'),
 
 describe('Recipes Endpoints', function () {
   let db;
+  console.dir(helpers);
 
   const {
     testRecipes
@@ -27,7 +28,7 @@ describe('Recipes Endpoints', function () {
     context('Given no recipes in database', () => {
       it('responds with 200 and an empty list', () => {
         return supertest(app)
-          .get('/api/articles')
+          .get('/api/recipes')
           .expect(200, []);
       });
     });
@@ -35,7 +36,7 @@ describe('Recipes Endpoints', function () {
 
   context('Given there are recipes in database', () => {
     beforeEach('insert recipes', () => {
-      helpers.seedRecipesTables(
+      return helpers.seedRecipesTables(
         db,
         testRecipes
       );

@@ -7,6 +7,7 @@ const bodyParser = express.json()
 const serializeRecipes = recipe => ({
   id: recipe.id,
   name: recipe.name,
+  author: recipe.author,
   ingredients: recipe.ingredients,
   instructions: recipe.instructions,
   prep_time: recipe.prep_time,

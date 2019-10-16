@@ -27,6 +27,8 @@ Seed Recipe Api `seed:api` ----- this is alias for (`psql -U recipeak -d recipea
 
 Truncate Recipe Api `unseed:api` ----- this is alias for `psql -U recipeak -d recipeak-api -f ./seeds/trunc.recipes_table.sql`*
 
+Truncate Recipe Test DB `unseed:test` ----- this is alias for `psql -U recipeak -d recipeak-api-test -f ./seeds/trunc.recipes_table.sql`*
+
 *In package.json for these scripts, you may replace fields `recipeak` and `recipeak-api` with preferred Postgres user and database.
 
 ## Deploying

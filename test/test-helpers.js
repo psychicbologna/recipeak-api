@@ -106,7 +106,7 @@ function makeMaliciousRecipe() {
 
 function makeRecipesFixtures() {
   const testRecipes = makeRecipesArray();
-  return {testRecipes};
+  return { testRecipes };
 }
 
 
@@ -123,12 +123,9 @@ function cleanTables(db) {
 
 // TODO reference line 227 in blogful-api-auth when users implemented.
 function seedRecipesTables(db, recipes) {
-  return db.transaction(async trx => {
-    if (recipes.length) {
-      await trx.into('recipes').insert(recipes);
-    }
-  });
+  return db.into('recipes').insert(recipes);
 }
+
 
 //Add '.then' for users when implemented.
 function seedMaliciousRecipe(db, recipe) {
