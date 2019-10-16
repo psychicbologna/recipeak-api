@@ -13,7 +13,9 @@
     "unseed:test": "psql -U recipeak -d recipeak-api-test -f ./seeds/trunc.recipes_table.sql",
     "start": "node src/server.js",
     "predeploy": "npm audit",
-    "deploy": "git push heroku master"
+    "deploy": "git push heroku master",
+    "devlog": "git add README.md",
+    "postdevlog": "git commit -m 'update log'"
   },
   "keywords": [],
   "author": "Alex Fukui <alexander.fukui@gmail.com>",
