@@ -39,6 +39,8 @@ When your new project is ready for deployment, add a new Heroku application with
 
 ### 2019-10-16
 
+- Migrating users in, kept separate from authors. Beginning to work in protected endpoints as well. Testing is working out okay. Interval function?
+
 - It occurred to me this morning - users should be separate from authors, because you might want to put up recipes from outside sources!! Must keep this in mind - there should be a default option that makes the author the user, and another that allows you to enter an author name.
 
 - A long fight here with frontend. Started sketching out a bunch of the routes and some of the testing. Look forward to implementing the helpers and having valid tests for the endpoints. Ending the night by writing some scripts to expedite seeding/unseeding for faster migration testing. Running into some issues with testing not coming out as I wanted, but got some fixes done on it.
