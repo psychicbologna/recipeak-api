@@ -20,7 +20,7 @@ recipesRouter
   .route('/')
   //TODO require auth
   .get((req, res, next) => {
-    RecipesService.getAllRecipes(req.app.get('db'))
+    RecipesService.getAllPublicRecipes(req.app.get('db'))
       .then(recipes => { res.json(recipes.map(serializeRecipes)); })
       .catch(next);
   })
@@ -36,6 +36,8 @@ recipesRouter
         });
       }
     }
+    newRecipe.prep_time = prep_time;
+    newRecipe.servings = servings;
   });
 
 

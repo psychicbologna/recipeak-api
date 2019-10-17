@@ -1,19 +1,20 @@
 const uuid = require('uuid');
 
-//Staging users...
+//TODO stage ingredients/units, alter ingredients to take them
+
 const users = [
   {
     id: uuid(),
     first_name: 'Jim',
     last_name: 'Fakeman',
-    username: 'SuperJim',
+    username: 'superjim',
     date_created: new Date('2029-01-22T16:28:32.615Z')
   },
   {
     id: uuid(),
     first_name: 'Marnie',
     last_name: 'Falsehood',
-    username: 'MiddleMarno',
+    username: 'middlemarno',
     date_created: new Date('2029-01-22T16:28:32.615Z')
   },
   {
@@ -29,7 +30,7 @@ function makeRecipesArray() {
   return [
     {
       id: uuid(),
-      name: 'Recipe Name 1',
+      name: 'Mary Recipe 1',
       author: 'Mary Fakename',
       ingredients: [
         'Ingredient 1', 'Ingredient 2', 'Ingredient 3'
@@ -37,11 +38,38 @@ function makeRecipesArray() {
       instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
       prep_time: '30 minutes',
       servings: 6,
-      date_created: new Date('2029-01-22T16:28:32.615Z')
+      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      user_id: users[0].id
     },
     {
       id: uuid(),
-      name: 'Recipe Name 2',
+      name: 'Mary Recipe 2',
+      author: 'Julia Childs',
+      ingredients: [
+        'Ingredient 1', 'Ingredient 2', 'Ingredient 3'
+      ],
+      instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
+      prep_time: '90 minutes',
+      servings: 6,
+      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      user_id: users[0].id
+    },
+    {
+      id: uuid(),
+      name: 'Mary Recipe 3',
+      author: 'Phillip Seymour Hoffman',
+      ingredients: [
+        'Ingredient 1', 'Ingredient 2', 'Ingredient 3', 'Ingredient 4'
+      ],
+      instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
+      prep_time: '90 minutes',
+      servings: 6,
+      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      user_id: users[0].id
+    },
+    {
+      id: uuid(),
+      name: 'Jimmy Recipe 1',
       author: 'Jimmy Buffet',
       ingredients: [
         'Ingredient 1', 'Ingredient 2', 'Ingredient 3'
@@ -49,11 +77,12 @@ function makeRecipesArray() {
       instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
       prep_time: '30 minutes',
       servings: 8,
-      date_created: new Date('2029-01-22T16:28:32.615Z')
+      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      user_id: users[1].id
     },
     {
       id: uuid(),
-      name: 'Recipe Name 1',
+      name: 'John Recipe 1',
       author: 'John Denver',
       ingredients: [
         'Ingredient 1', 'Ingredient 2', 'Ingredient 3'
@@ -61,7 +90,8 @@ function makeRecipesArray() {
       instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
       prep_time: '30 minutes',
       servings: 3,
-      date_created: new Date('2029-01-22T16:28:32.615Z')
+      date_created: new Date('2029-01-22T16:28:32.615Z'),
+      user_id: users[2].id
     }
   ];
 }
