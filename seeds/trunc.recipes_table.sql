@@ -1,8 +1,7 @@
 BEGIN;
 
 TRUNCATE
-  recipes,
-  users
+  recipes
   RESTART IDENTITY CASCADE;
 
 COMMIT;
