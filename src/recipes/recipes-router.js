@@ -8,6 +8,7 @@ const serializeRecipes = recipe => ({
   id: recipe.id,
   name: recipe.name,
   author: recipe.author,
+  //TODO when ingredients are done, refactor
   ingredients: recipe.ingredients,
   instructions: recipe.instructions,
   //TODO figure out how to structure the prep time, do I need a helper function here?
@@ -18,7 +19,7 @@ const serializeRecipes = recipe => ({
 
 recipesRouter
   .route('/')
-  //TODO require auth
+  //TODO require auth. to view all.
   .get((req, res, next) => {
     RecipesService.getAllPublicRecipes(req.app.get('db'))
       .then(recipes => { res.json(recipes.map(serializeRecipes)); })
@@ -43,7 +44,7 @@ recipesRouter
 
 recipesRouter
   .route('/:recipe_id')
-  //TODO require auth
+  //TODO require auth if recipe private and not the user who owns the recipe.
   .all(checkRecipeExists)
   .get((req, res) => {
     res.json(serializeRecipes(res.recipe));
