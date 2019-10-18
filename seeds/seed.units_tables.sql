@@ -1,11 +1,10 @@
-
-IF EXISTS TRUNCATE
+TRUNCATE
   units_imperial,
   units_metric,
   units_approximate
   RESTART IDENTITY CASCADE;
 
-IF EXISTS INSERT INTO
+INSERT INTO
   units_approximate (single, plural)
 VALUES
   --approximate, measurable but not following a specific measurement system--
@@ -20,7 +19,7 @@ VALUES
   ('case', 'cases'),
   ('clove', 'cloves'),
   ('container', 'containers'),
-  ('cube', 'cubes')
+  ('cube', 'cubes'),
   ('cut', 'cuts'),
   ('cutting', 'cuttings'),
   ('dash', 'dashes'),
@@ -36,12 +35,13 @@ VALUES
   ('package', 'packages'),
   ('packet', 'packets'),
   ('part', 'parts'),
-  ('piece', 'pieces')
+  ('piece', 'pieces'),
   ('pinch', 'pinches'),
   ('pitcher', 'pitchers'),
   ('quarter', 'quarters'),
   ('scoop', 'scoops'),
   ('section', 'sections'),
+  ('shake', 'shakes'),
   ('slice', 'slices'),
   ('smidgen', 'smidgens'),
   ('square', 'squares'),
@@ -50,7 +50,9 @@ VALUES
   ('sprinkle', 'sprinkles'),
   ('tin', 'tins');
 
-IF EXISTS INSERT INTO
+
+--TODO add to_imperial with conversion ratio
+INSERT INTO
   units_metric (
     abbreviation,
     single,
@@ -70,7 +72,8 @@ IF EXISTS INSERT INTO
   ('qrt', 'quart', 'quarts'),
   ('gal', 'gallon', 'gallons');
 
-IF EXISTS INSERT INTO
+--TODO add to_metric with conversion ratio
+INSERT INTO
   units_imperial (abbreviation, single, plural)
   VALUES
   ('mg', 'milligram', 'milligrams'),
