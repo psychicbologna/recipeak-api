@@ -43,6 +43,14 @@ When your new project is ready for deployment, add a new Heroku application with
 
 To update, `npm run devlog`
 
+### 2019-10-18
+
+- Finally happy with data structure.
+
+### 2019-10-17
+
+- Made a 'public' column on recipes and changed the GET /recipes route so that only public recipes will be displayed. Added users and relation to recipes, updated seeds. Sketching out authorization.
+
 ### 2019-10-16
 
 - Migrating users in, kept separate from authors. Beginning to work in protected endpoints as well. Testing is working out okay. Interval function? Also added a log script to update README.md, will maybe add more for other sections of this file. //TODO //TODO //TODO
