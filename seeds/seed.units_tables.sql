@@ -1,84 +1,73 @@
 TRUNCATE
-  units_imperial,
-  units_metric,
-  units_approximate
+  units
   RESTART IDENTITY CASCADE;
 
 INSERT INTO
-  units_approximate (single, plural)
+  units (nickname, unit_data)
 VALUES
+  ('none', '{"unit_single":"", "unit_plural":""}'),
+  ('x','{"unit_single":"x", "unit_plural":"x"}'),
   --approximate, measurable but not following a specific measurement system--
-  ('x', 'x'),
-  ('bar', 'bars'),
-  ('bottle', 'bottles'),
-  ('box', 'boxes'),
-  ('bowl', 'bowls'),
-  ('bunch', 'bunches'),
-  ('bushel', 'bushels'),
-  ('can', 'cans'),
-  ('case', 'cases'),
-  ('clove', 'cloves'),
-  ('container', 'containers'),
-  ('cube', 'cubes'),
-  ('cut', 'cuts'),
-  ('cutting', 'cuttings'),
-  ('dash', 'dashes'),
-  ('dice', 'dices'),
-  ('dollop', 'dollops'),
-  ('drop', 'drops'),
-  ('half', 'halves'),
-  ('handful', 'handfuls'),
-  ('jar', 'jars'),
-  ('jug', 'jugs'),
-  ('leaf', 'leaves'),
-  ('loaf', 'loaves'),
-  ('package', 'packages'),
-  ('packet', 'packets'),
-  ('part', 'parts'),
-  ('piece', 'pieces'),
-  ('pinch', 'pinches'),
-  ('pitcher', 'pitchers'),
-  ('quarter', 'quarters'),
-  ('scoop', 'scoops'),
-  ('section', 'sections'),
-  ('shake', 'shakes'),
-  ('slice', 'slices'),
-  ('smidgen', 'smidgens'),
-  ('square', 'squares'),
-  ('splash', 'splashes'),
-  ('sprig', 'sprigs'),
-  ('sprinkle', 'sprinkles'),
-  ('tin', 'tins');
-
-
---TODO add to_imperial with conversion ratio
-INSERT INTO
-  units_metric (
-    abbreviation,
-    single,
-    plural
-  )
-  VALUES
-  ('oz', 'ounce', 'ounces'),
-  ('lb', 'pound', 'pounds'),
-  ('tsp', 'teaspoon', 'teaspoons'),
-  ('tbsp', 'tablespoon', 'tablespoons'),
-  ('floz', 'fluid ounce', 'fluid ounces'),
-  ('1/4 cup', '1/4 cup', '1/4 cups'),
-  ('1/3 cup', '1/3 cup', '1/3 cups'),
-  ('1/2 cup', '1/2 cup', '1/2 cups'),
-  ('cup', 'cup', 'cups'),
-  ('pt', 'pint', 'pints'),
-  ('qrt', 'quart', 'quarts'),
-  ('gal', 'gallon', 'gallons');
-
---TODO add to_metric with conversion ratio
-INSERT INTO
-  units_imperial (abbreviation, single, plural)
-  VALUES
-  ('mg', 'milligram', 'milligrams'),
-  ('g', 'gram', 'grams'),
-  ('kg', 'kilogram', 'kilograms'),
-  ('ml', 'milliliter', 'milliliters'),
-  ('l', 'liter', 'liters'),
-  ('dl', 'deciliter', 'deciliters');
+  ('apprx_bar','{"unit_single":"bar", "unit_plural":"bars"}'),
+  ('apprx_btl','{"unit_single":"bottle", "unit_plural":"bottles"}'),
+  ('apprx_bx','{"unit_single":"box", "unit_plural":"boxes"}'),
+  ('apprx_bowl','{"unit_single":"bowl", "unit_plural":"bowls"}'),
+  ('apprx_bnch','{"unit_single":"bunch", "unit_plural":"bunches"}'),
+  ('apprx_bush','{"unit_single":"bushel", "unit_plural":"bushels"}'),
+  ('apprx_can','{"unit_single":"can", "unit_plural":"cans"}'),
+  ('apprx_cs','{"unit_single":"case", "unit_plural":"cases"}'),
+  ('apprx_clv','{"unit_single":"clove", "unit_plural":"cloves"}'),
+  ('apprx_ct','{"unit_single":"container", "unit_plural":"containers"}'),
+  ('apprx_cb','{"unit_single":"cube", "unit_plural":"cubes"}'),
+  ('apprx_cut','{"unit_single":"cut", "unit_plural":"cuts"}'),
+  ('apprx_cting','{"unit_single":"cutting", "unit_plural":"cuttings"}'),
+  ('apprx_db','{"unit_single":"dab", "unit_plural":"dabs"}'),
+  ('apprx_dsh','{"unit_single":"dash", "unit_plural":"dashes"}'),
+  ('apprx_dc','{"unit_single":"dice", "unit_plural":"dices"}'),
+  ('apprx_dolp','{"unit_single":"dollop", "unit_plural":"dollops"}'),
+  ('apprx_drp','{"unit_single":"drop", "unit_plural":"drops"}'),
+  ('apprx_gls', '{"unit_single":"glass", "unit_plural":"glasses"}'),
+  ('apprx_hlv', '{"unit_single":"half", "unit_plural":"halves"}'),
+  ('apprx_hnd','{"unit_single":"handful", "unit_plural":"handfuls"}'),
+  ('apprx_jr','{"unit_single":"jar", "unit_plural":"jars"}'),
+  ('apprx_jg','{"unit_single":"jug", "unit_plural":"jugs"}'),
+  ('apprx_lef','{"unit_single":"leaf", "unit_plural":"leaves"}'),
+  ('apprx_lof','{"unit_single":"loaf", "unit_plural":"loaves"}'),
+  ('apprx_pkg','{"unit_single":"package", "unit_plural":"packages"}'),
+  ('apprx_pkt','{"unit_single":"packet", "unit_plural":"packets"}'),
+  ('apprx_prt','{"unit_single":"part", "unit_plural":"parts"}'),
+  ('apprx_pce','{"unit_single":"piece", "unit_plural":"pieces"}'),
+  ('apprx_pnch','{"unit_single":"pinch", "unit_plural":"pinches"}'),
+  ('apprx_pchr','{"unit_single":"pitcher", "unit_plural":"pitchers"}'),
+  ('apprx_qtr','{"unit_single":"quarter", "unit_plural":"quarters"}'),
+  ('apprx_scp','{"unit_single":"scoop", "unit_plural":"scoops"}'),
+  ('apprx_sec','{"unit_single":"section", "unit_plural":"sections"}'),
+  ('apprx_shk','{"unit_single":"shake", "unit_plural":"shakes"}'),
+  ('apprx_sht','{"unit_single":"shot", "unit_plural":"shots"}'),
+  ('apprx_slc','{"unit_single":"slice", "unit_plural":"slices"}'),
+  ('apprx_smdg','{"unit_single":"smidgen", "unit_plural":"smidgens"}'),
+  ('apprx_sqr','{"unit_single":"square", "unit_plural":"squares"}'),
+  ('apprx_splsh','{"unit_single":"splash", "unit_plural":"splashes"}'),
+  ('apprx_sprg','{"unit_single":"sprig", "unit_plural":"sprigs"}'),
+  ('apprx_sprnk','{"unit_single":"sprinkle", "unit_plural":"sprinkles"}'),
+  ('apprx_tin','{"unit_single":"tin", "unit_plural":"tins"}'),
+--TODO add conversion_ratio & conversion_unit 
+  ('imp_oz','{"unit_abbr":"oz", "unit_single":"ounce", "unit_plural":"ounces"}'),
+  ('imp_lb','{"unit_abbr":"lb", "unit_single":"pound", "unit_plural":"pounds"}'),
+  ('imp_tsp','{"unit_abbr":"tsp", "unit_single":"teaspoon", "unit_plural":"teaspoons"}'),
+  ('imp_tbsp','{"unit_abbr":"tbsp", "unit_single":"tablespoon", "unit_plural":"tablespoons"}'),
+  ('imp_floz','{"unit_abbr":"floz", "unit_single":"fluid ounce", "unit_plural":"fluid ounces"}'),
+  ('imp_qtcup','{"unit_abbr":"1/4 cup", "unit_single":"1/4 cup", "unit_plural":"1/4 cups"}'),
+  ('imp_thdcup','{"unit_abbr":"1/3 cup", "unit_single":"1/3 cup", "unit_plural":"1/3 cups"}'),
+  ('imp_hcup','{"unit_abbr":"1/2 cup", "unit_single":"1/2 cup", "unit_plural":"1/2 cups"}'),
+  ('imp_cup','{"unit_abbr":"cup", "unit_single":"cup", "unit_plural":"cups"}'),
+  ('imp_pt','{"unit_abbr":"pt", "unit_single":"pint", "unit_plural":"pints"}'),
+  ('imp_qrt','{"unit_abbr":"qrt", "unit_single":"quart", "unit_plural":"quarts"}'),
+  ('imp_gal','{"unit_abbr":"gal", "unit_single":"gallon", "unit_plural":"gallons"}'),
+--TODO add conversion_ratio & conversion_unit
+  ('met_mg','{"unit_abbr":"mg", "unit_single":"milligram", "unit_plural":"milligrams"}'),
+  ('met_g','{"unit_abbr":"g", "unit_single":"gram", "unit_plural":"grams"}'),
+  ('met_kg','{"unit_abbr":"kg", "unit_single":"kilogram", "unit_plural":"kilograms"}'),
+  ('met_ml','{"unit_abbr":"ml", "unit_single":"milliliter", "unit_plural":"milliliters"}'),
+  ('met_l','{"unit_abbr":"l", "unit_single":"liter", "unit_plural":"liters"}'),
+  ('met_dl','{"unit_abbr":"dl", "unit_single":"deciliter", "unit_plural":"deciliters"}');

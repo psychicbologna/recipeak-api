@@ -1,9 +1,7 @@
 BEGIN;
 
 IF EXISTS TRUNCATE
-  units_imperial,
-  units_metric,
-  units_approximate
+  units
   RESTART IDENTITY CASCADE;
 
 COMMIT;
