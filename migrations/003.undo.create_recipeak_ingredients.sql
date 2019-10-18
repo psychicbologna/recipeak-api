@@ -1,8 +1,7 @@
 BEGIN;
 
-DROP TABLE
-  ingredients,
-  units
-  RESTART IDENTITY CASCADE;
+DROP TABLE IF EXISTS
+  units,
+  ingredients;
 
 COMMIT;

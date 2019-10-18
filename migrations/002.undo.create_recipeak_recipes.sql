@@ -1,3 +1,2 @@
 DROP TABLE IF EXISTS
-  recipes
-  RESTART IDENTITY CASCADE;
+  recipes;

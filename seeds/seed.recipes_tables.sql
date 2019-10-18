@@ -1,8 +1,91 @@
 BEGIN;
 
 TRUNCATE
-  recipes
+  ingredients,
+  units,
+  recipes,
+  users
   RESTART IDENTITY CASCADE;
+
+INSERT INTO users (id, first_name, last_name, username, password)
+  VALUES
+  ('9ba39ce8-0983-4c6c-a781-fae378838c16', 'Alex', 'Admin', 'alex', 'password'),
+  ('b2bb31f7-8c31-4058-8885-9404e2add1c1', 'Claire', 'Saffitz', 'csaffitz01', 'aterriblepassword'),
+  ('e58a7042-ecdf-472e-8e3a-1367192f26d6', 'Lindsay', 'Ostrom', 'lOstrom02', 'anotherterriblepassword'),
+  ('922fc3ba-cdc1-4423-a663-e24284e6d537', 'Adam', '', 'adam03', 'wordpasspassword'),
+  ('b79db978-93ef-46e0-99a4-0dfc1041ccc9', 'Julia', 'Child', 'jChild04', 'bonjour'),
+  ('d771c9da-0ee2-4292-be2e-5ec6ac0cbfc1', 'Guy', 'Fieri', 'fireandfury05', 'flavortown'),
+  ('1c1bf9bf-d3e4-48fd-bf17-1f16518a740b', 'Anthony', '', 'bourdom06', 'thisbeautifulworld');
+
+INSERT INTO
+  units (unit_set, unit_data)
+VALUES
+  ('none', '{"unit_single":"", "unit_plural":""}'),
+  ('x','{"unit_single":"x", "unit_plural":"x"}'),
+  --approximate, measurable but not following a specific measurement system--
+  ('apprx_bar','{"unit_single":"bar", "unit_plural":"bars"}'),
+  ('apprx_btl','{"unit_single":"bottle", "unit_plural":"bottles"}'),
+  ('apprx_bx','{"unit_single":"box", "unit_plural":"boxes"}'),
+  ('apprx_bowl','{"unit_single":"bowl", "unit_plural":"bowls"}'),
+  ('apprx_bnch','{"unit_single":"bunch", "unit_plural":"bunches"}'),
+  ('apprx_bush','{"unit_single":"bushel", "unit_plural":"bushels"}'),
+  ('apprx_can','{"unit_single":"can", "unit_plural":"cans"}'),
+  ('apprx_cs','{"unit_single":"case", "unit_plural":"cases"}'),
+  ('apprx_clv','{"unit_single":"clove", "unit_plural":"cloves"}'),
+  ('apprx_ct','{"unit_single":"container", "unit_plural":"containers"}'),
+  ('apprx_cb','{"unit_single":"cube", "unit_plural":"cubes"}'),
+  ('apprx_cut','{"unit_single":"cut", "unit_plural":"cuts"}'),
+  ('apprx_cting','{"unit_single":"cutting", "unit_plural":"cuttings"}'),
+  ('apprx_db','{"unit_single":"dab", "unit_plural":"dabs"}'),
+  ('apprx_dsh','{"unit_single":"dash", "unit_plural":"dashes"}'),
+  ('apprx_dc','{"unit_single":"dice", "unit_plural":"dices"}'),
+  ('apprx_dolp','{"unit_single":"dollop", "unit_plural":"dollops"}'),
+  ('apprx_drp','{"unit_single":"drop", "unit_plural":"drops"}'),
+  ('apprx_gls', '{"unit_single":"glass", "unit_plural":"glasses"}'),
+  ('apprx_hlv', '{"unit_single":"half", "unit_plural":"halves"}'),
+  ('apprx_hnd','{"unit_single":"handful", "unit_plural":"handfuls"}'),
+  ('apprx_jr','{"unit_single":"jar", "unit_plural":"jars"}'),
+  ('apprx_jg','{"unit_single":"jug", "unit_plural":"jugs"}'),
+  ('apprx_lef','{"unit_single":"leaf", "unit_plural":"leaves"}'),
+  ('apprx_lof','{"unit_single":"loaf", "unit_plural":"loaves"}'),
+  ('apprx_pkg','{"unit_single":"package", "unit_plural":"packages"}'),
+  ('apprx_pkt','{"unit_single":"packet", "unit_plural":"packets"}'),
+  ('apprx_prt','{"unit_single":"part", "unit_plural":"parts"}'),
+  ('apprx_pce','{"unit_single":"piece", "unit_plural":"pieces"}'),
+  ('apprx_pnch','{"unit_single":"pinch", "unit_plural":"pinches"}'),
+  ('apprx_pchr','{"unit_single":"pitcher", "unit_plural":"pitchers"}'),
+  ('apprx_qtr','{"unit_single":"quarter", "unit_plural":"quarters"}'),
+  ('apprx_scp','{"unit_single":"scoop", "unit_plural":"scoops"}'),
+  ('apprx_sec','{"unit_single":"section", "unit_plural":"sections"}'),
+  ('apprx_shk','{"unit_single":"shake", "unit_plural":"shakes"}'),
+  ('apprx_sht','{"unit_single":"shot", "unit_plural":"shots"}'),
+  ('apprx_slc','{"unit_single":"slice", "unit_plural":"slices"}'),
+  ('apprx_smdg','{"unit_single":"smidgen", "unit_plural":"smidgens"}'),
+  ('apprx_sqr','{"unit_single":"square", "unit_plural":"squares"}'),
+  ('apprx_splsh','{"unit_single":"splash", "unit_plural":"splashes"}'),
+  ('apprx_sprg','{"unit_single":"sprig", "unit_plural":"sprigs"}'),
+  ('apprx_sprnk','{"unit_single":"sprinkle", "unit_plural":"sprinkles"}'),
+  ('apprx_tin','{"unit_single":"tin", "unit_plural":"tins"}'),
+--TODO add conversion_ratio & conversion_unit 
+  ('imp_oz','{"unit_abbr":"oz", "unit_single":"ounce", "unit_plural":"ounces"}'),
+  ('imp_lb','{"unit_abbr":"lb", "unit_single":"pound", "unit_plural":"pounds"}'),
+  ('imp_tsp','{"unit_abbr":"tsp", "unit_single":"teaspoon", "unit_plural":"teaspoons"}'),
+  ('imp_tbsp','{"unit_abbr":"tbsp", "unit_single":"tablespoon", "unit_plural":"tablespoons"}'),
+  ('imp_floz','{"unit_abbr":"floz", "unit_single":"fluid ounce", "unit_plural":"fluid ounces"}'),
+  ('imp_qtcup','{"unit_abbr":"1/4 cup", "unit_single":"1/4 cup", "unit_plural":"1/4 cups"}'),
+  ('imp_thdcup','{"unit_abbr":"1/3 cup", "unit_single":"1/3 cup", "unit_plural":"1/3 cups"}'),
+  ('imp_hcup','{"unit_abbr":"1/2 cup", "unit_single":"1/2 cup", "unit_plural":"1/2 cups"}'),
+  ('imp_cup','{"unit_abbr":"cup", "unit_single":"cup", "unit_plural":"cups"}'),
+  ('imp_pt','{"unit_abbr":"pt", "unit_single":"pint", "unit_plural":"pints"}'),
+  ('imp_qrt','{"unit_abbr":"qrt", "unit_single":"quart", "unit_plural":"quarts"}'),
+  ('imp_gal','{"unit_abbr":"gal", "unit_single":"gallon", "unit_plural":"gallons"}'),
+--TODO add conversion_ratio & conversion_unit
+  ('met_mg','{"unit_abbr":"mg", "unit_single":"milligram", "unit_plural":"milligrams"}'),
+  ('met_g','{"unit_abbr":"g", "unit_single":"gram", "unit_plural":"grams"}'),
+  ('met_kg','{"unit_abbr":"kg", "unit_single":"kilogram", "unit_plural":"kilograms"}'),
+  ('met_ml','{"unit_abbr":"ml", "unit_single":"milliliter", "unit_plural":"milliliters"}'),
+  ('met_l','{"unit_abbr":"l", "unit_single":"liter", "unit_plural":"liters"}'),
+  ('met_dl','{"unit_abbr":"dl", "unit_single":"deciliter", "unit_plural":"deciliters"}');
 
 INSERT INTO
   recipes (
@@ -95,7 +178,6 @@ INSERT INTO
 ('4783af4f-3766-48f4-9d43-40566189052a', .5, 'x', 'small fennel bulb, very thinly sliced'),
 ('4783af4f-3766-48f4-9d43-40566189052a', 3, 'apprx_clv', 'cloves of garlic, very thinly sliced'),
 ('4783af4f-3766-48f4-9d43-40566189052a', 0, 'none', 'Crushed red pepper flakes and torn basil leaves (for serving)'),
-
 
 ('4a8d066b-9b5a-425a-9ef3-f04f364d3460', 1, 'apprx_hlv', 'half of an onion, chopped'),
 ('4a8d066b-9b5a-425a-9ef3-f04f364d3460', 3, 'apprx_clv', 'garlic, minced'),
