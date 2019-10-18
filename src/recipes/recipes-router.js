@@ -1,53 +1,47 @@
+//New call for ingredients needed, as well as refactoring for new data structures!
+
 const express = require('express'),
-  RecipesService = require('./recipes-service');
+  RecipesService = require('./recipes-service'),
+  { requireAuth } = require('../middleware/basic-auth');
 
 const recipesRouter = express.Router();
-const bodyParser = express.json()
-
-const serializeRecipes = recipe => ({
-  id: recipe.id,
-  name: recipe.name,
-  author: recipe.author,
-  //TODO when ingredients are done, refactor
-  ingredients: recipe.ingredients,
-  instructions: recipe.instructions,
-  //TODO figure out how to structure the prep time, do I need a helper function here?
-  prep_time: recipe.prep_time.minutes + " minutes",
-  servings: recipe.servings,
-  date_created: recipe.date_created
-});
+const bodyParser = express.json();
 
 recipesRouter
   .route('/')
   //TODO require auth. to view all.
   .get((req, res, next) => {
     RecipesService.getAllPublicRecipes(req.app.get('db'))
-      .then(recipes => { res.json(recipes.map(serializeRecipes)); })
+      .then(recipes => { res.json(recipes.map(RecipesService.serializeRecipe)); })
       .catch(next);
-  })
-  .post( (req,res, next) => {
-    //TODO add user, ingredients
-    const { name, author, ingredients, instructions, prep_time, servings  } = req.body;
-    const newRecipe = { name, author, ingredients, instructions };
-    
-    for (const [key, value] of Object.entries(newRecipe)) {
-      if (value == null) {
-        return res.status(400).json({
-          error: `Missing ${key} in request body.`
-        });
-      }
-    }
-    newRecipe.prep_time = prep_time;
-    newRecipe.servings = servings;
   });
+
+//TODO Post!!
+// recipesRouter
+//   .route('/')
+//   .post( (req,res, next) => {
+//     //TODO add user, ingredients
+//     const { name, author, ingredients, instructions, prep_time, servings  } = req.body;
+//     const newRecipe = { name, author, ingredients, instructions };
+    
+//     for (const [key, value] of Object.entries(newRecipe)) {
+//       if (value == null) {
+//         return res.status(400).json({
+//           error: `Missing ${key} in request body.`
+//         });
+//       }
+//     }
+//     newRecipe.prep_time = prep_time;
+//     newRecipe.servings = servings;
+//   });
 
 
 recipesRouter
   .route('/:recipe_id')
-  //TODO require auth if recipe private and not the user who owns the recipe.
+  .all(requireAuth)
   .all(checkRecipeExists)
   .get((req, res) => {
-    res.json(serializeRecipes(res.recipe));
+    res.json(RecipesService.serializeRecipe(res.recipe));
   });
 
 /* async/await syntax for promises */
