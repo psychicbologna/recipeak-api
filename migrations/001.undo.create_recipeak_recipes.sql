@@ -1,2 +1,0 @@
-DROP TABLE IF EXISTS recipes;
-DROP EXTENSION IF EXISTS "uuid-ossp";
