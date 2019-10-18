@@ -23,7 +23,7 @@ recipesRouter
 //     //TODO add user, ingredients
 //     const { name, author, ingredients, instructions, prep_time, servings  } = req.body;
 //     const newRecipe = { name, author, ingredients, instructions };
-    
+
 //     for (const [key, value] of Object.entries(newRecipe)) {
 //       if (value == null) {
 //         return res.status(400).json({
@@ -43,6 +43,27 @@ recipesRouter
   .get((req, res) => {
     res.json(RecipesService.serializeRecipe(res.recipe));
   });
+
+recipesRouter.route('/:recipe_id/ingredients/')
+  .all(requireAuth)
+  .all(checkRecipeExists)
+  .get((req, res, next) => {
+    RecipesService.getIngredientsForRecipe(
+      req.app.get('db'),
+      req.params.recipe_id
+    )
+      .then(ingredients => {
+        const promises = ingredients.map(ingredient =>
+          RecipesService.serializeRecipeIngredient(req.app.get('db'), ingredient)
+        );
+        Promise.all(promises)
+          .then( ingredients_data => {
+            return res.json(ingredients_data)
+          });
+      })
+      .catch(next);
+  });
+
 
 /* async/await syntax for promises */
 async function checkRecipeExists(req, res, next) {
