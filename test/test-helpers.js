@@ -1,40 +1,72 @@
-const uuid = require('uuid');
+const bcrypt = require('bcryptjs'),
+  uuid = require('uuid');
 
 //TODO stage ingredients/units, alter ingredients to take them
 
-const users = [
-  {
-    id: uuid(),
-    first_name: 'Jim',
-    last_name: 'Fakeman',
-    username: 'superjim',
-    date_created: new Date('2029-01-22T16:28:32.615Z')
-  },
-  {
-    id: uuid(),
-    first_name: 'Marnie',
-    last_name: 'Falsehood',
-    username: 'middlemarno',
-    date_created: new Date('2029-01-22T16:28:32.615Z')
-  },
-  {
-    id: uuid(),
-    first_name: 'Pat',
-    last_name: 'CooksALot',
-    username: 'superpat022',
-    date_created: new Date('2029-01-22T16:28:32.615Z')
-  }
-];
+function makeUsersArray() {
+  return [
+    {
+      id: uuid(),
+      first_name: 'Test-1',
+      last_name: 'Test-1',
+      username: 'superjim',
+      password: 'password',
+      date_created: new Date('2029-01-22T16:28:32.615Z')
+    },
+    {
+      id: uuid(),
+      first_name: 'Test-2',
+      last_name: 'Test-2',
+      username: 'middlemarno',
+      password: 'password',
+      date_created: new Date('2029-01-22T16:28:32.615Z')
+    },
+    {
+      id: uuid(),
+      first_name: 'Test-3',
+      last_name: 'Test-3',
+      username: 'superpat022',
+      password: 'password',
+      date_created: new Date('2029-01-22T16:28:32.615Z')
+    },
+    {
+      id: uuid(),
+      first_name: 'Test-4',
+      last_name: 'Test-4',
+      username: 'choppybit',
+      password: 'password',
+      date_created: new Date('2029-01-22T16:28:32.615Z')
+    }
+  ];
+}
 
-function makeRecipesArray() {
+function makeUnitsArray() {
+  return [
+    { id: 1,
+      unit_set: 'test-1',
+      unit_data: '{"unit_single":"t1", "unit_plural":"t1s"}'
+    },
+    { id: 2,
+      unit_set: 'test-2',
+      unit_data: '{"unit_single":"t2", "unit_plural":"t2s"}'
+    },
+    { id: 3,
+      unit_set: 'test-3',
+      unit_data: '{"unit_single":"t3", "unit_plural":"t3s"}'
+    },
+    { id: 4,
+      unit_set: 'test-4',
+      unit_data: '{"unit_single":"t4", "unit_plural":"t4s"}'
+    },
+  ];
+}
+
+function makeRecipesArray(users) {
   return [
     {
       id: uuid(),
       name: 'Mary Recipe 1',
       author: 'Mary Fakename',
-      ingredients: [
-        'Ingredient 1', 'Ingredient 2', 'Ingredient 3'
-      ],
       instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
       prep_time: '30 minutes',
       servings: 6,
@@ -45,9 +77,6 @@ function makeRecipesArray() {
       id: uuid(),
       name: 'Mary Recipe 2',
       author: 'Julia Childs',
-      ingredients: [
-        'Ingredient 1', 'Ingredient 2', 'Ingredient 3'
-      ],
       instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
       prep_time: '90 minutes',
       servings: 6,
@@ -58,11 +87,8 @@ function makeRecipesArray() {
       id: uuid(),
       name: 'Mary Recipe 3',
       author: 'Phillip Seymour Hoffman',
-      ingredients: [
-        'Ingredient 1', 'Ingredient 2', 'Ingredient 3', 'Ingredient 4'
-      ],
       instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
-      prep_time: '90 minutes',
+      prep_time: '1 hour 30 minutes',
       servings: 6,
       date_created: new Date('2029-01-22T16:28:32.615Z'),
       user_id: users[0].id
@@ -71,9 +97,6 @@ function makeRecipesArray() {
       id: uuid(),
       name: 'Jimmy Recipe 1',
       author: 'Jimmy Buffet',
-      ingredients: [
-        'Ingredient 1', 'Ingredient 2', 'Ingredient 3'
-      ],
       instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
       prep_time: '30 minutes',
       servings: 8,
@@ -84,9 +107,6 @@ function makeRecipesArray() {
       id: uuid(),
       name: 'John Recipe 1',
       author: 'John Denver',
-      ingredients: [
-        'Ingredient 1', 'Ingredient 2', 'Ingredient 3'
-      ],
       instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
       prep_time: '30 minutes',
       servings: 3,
@@ -96,12 +116,186 @@ function makeRecipesArray() {
   ];
 }
 
+function makeIngredientsArray(recipes, units) {
+  return [
+    {
+      recipe_id: recipes[0].id,
+      amt: 1,
+      unit_set: units[0].unit_set,
+      ingredient: 'test-ingredient-1',
+    },
+    {
+      recipe_id: recipes[0].id,
+      amt: 1,
+      unit_set: units[1].unit_set,
+      ingredient: 'test-ingredient-2',
+    },
+    {
+      recipe_id: recipes[0].id,
+      amt: 1,
+      unit_set: units[2].unit_set,
+      ingredient: 'test-ingredient-3',
+    },
+    {
+      recipe_id: recipes[0].id,
+      amt: 1,
+      unit_set: units[3].unit_set,
+      ingredient: 'test-ingredient-4',
+    },
+    // {
+    //   recipe_id: recipes[0].id,
+    //   amt: 1,
+    //   // unit_set: '',
+    //   unit_data: {
+    //     unit_single: 'custom-unit',
+    //     unit_plural: 'custom-unit'
+    //   },
+    //   ingredient: 'test-ingredient-5',
+    // },
+    // {
+    //   recipe_id: recipes[1].id,
+    //   amt: 1,
+    //   unit_set: units[0].unit_set,
+    //   ingredient: 'test-ingredient-1',
+    // },
+    // {
+    //   recipe_id: recipes[1].id,
+    //   amt: 1,
+    //   unit_set: units[1].unit_set,
+    //   ingredient: 'test-ingredient-2',
+    // },
+    // {
+    //   recipe_id: recipes[1].id,
+    //   amt: 1,
+    //   unit_set: units[2].unit_set,
+    //   ingredient: 'test-ingredient-3',
+    // },
+    // {
+    //   recipe_id: recipes[1].id,
+    //   amt: 1,
+    //   unit_set: units[3].unit_set,
+    //   ingredient: 'test-ingredient-4',
+    // },
+    // {
+    //   recipe_id: recipes[1].id,
+    //   amt: 1,
+    //   // unit_set: '',
+    //   unit_data: {
+    //     unit_single: 'custom-unit',
+    //     unit_plural: 'custom-unit'
+    //   },
+    //   ingredient: 'test-ingredient-5',
+    // },
+    // {
+    //   recipe_id: recipes[2].id,
+    //   amt: 1,
+    //   unit_set: units[0].unit_set,
+    //   ingredient: 'test-ingredient-1',
+    // },
+    // {
+    //   recipe_id: recipes[2].id,
+    //   amt: 1,
+    //   unit_set: units[1].unit_set,
+    //   ingredient: 'test-ingredient-2',
+    // },
+    // {
+    //   recipe_id: recipes[2].id,
+    //   amt: 1,
+    //   unit_set: units[2].unit_set,
+    //   ingredient: 'test-ingredient-3',
+    // },
+    // {
+    //   recipe_id: recipes[2].id,
+    //   amt: 1,
+    //   unit_set: units[3].unit_set,
+    //   ingredient: 'test-ingredient-4',
+    // },
+    // {
+    //   recipe_id: recipes[2].id,
+    //   amt: 1,
+    //   // unit_set: '',
+    //   unit_data: {
+    //     unit_single: 'custom-unit',
+    //     unit_plural: 'custom-unit'
+    //   },
+    //   ingredient: 'test-ingredient-5',
+    // },
+    // {
+    //   recipe_id: recipes[3].id,
+    //   amt: 1,
+    //   unit_set: units[0].unit_set,
+    //   ingredient: 'test-ingredient-1',
+    // },
+    // {
+    //   recipe_id: recipes[3].id,
+    //   amt: 1,
+    //   unit_set: units[1].unit_set,
+    //   ingredient: 'test-ingredient-2',
+    // },
+    // {
+    //   recipe_id: recipes[3].id,
+    //   amt: 1,
+    //   unit_set: units[2].unit_set,
+    //   ingredient: 'test-ingredient-3',
+    // },
+    // {
+    //   recipe_id: recipes[3].id,
+    //   amt: 1,
+    //   unit_set: units[3].unit_set,
+    //   ingredient: 'test-ingredient-4',
+    // },
+    // {
+    //   recipe_id: recipes[3].id,
+    //   amt: 1,
+    //   // unit_set: '',
+    //   unit_data: {
+    //     unit_single: 'custom-unit',
+    //     unit_plural: 'custom-unit'
+    //   },
+    //   ingredient: 'test-ingredient-5',
+    // },
+    // {
+    //   recipe_id: recipes[4].id,
+    //   amt: 1,
+    //   unit_set: units[0].unit_set,
+    //   ingredient: 'test-ingredient-1',
+    // },
+    // {
+    //   recipe_id: recipes[4].id,
+    //   amt: 1,
+    //   unit_set: units[1].unit_set,
+    //   ingredient: 'test-ingredient-2',
+    // },
+    // {
+    //   recipe_id: recipes[4].id,
+    //   amt: 1,
+    //   unit_set: units[2].unit_set,
+    //   ingredient: 'test-ingredient-3',
+    // },
+    // {
+    //   recipe_id: recipes[4].id,
+    //   amt: 1,
+    //   unit_set: units[3].unit_set,
+    //   ingredient: 'test-ingredient-4',
+    // },
+    // {
+    //   recipe_id: recipes[4].id,
+    //   amt: 1,
+    //   // unit_set: '',
+    //   unit_data: {
+    //     unit_single: 'custom-unit',
+    //     unit_plural: 'custom-unit'
+    //   },
+    //   ingredient: 'test-ingredient-5',
+    // },
+  ];
+}
+
 function makeExpectedRecipe(recipe) {
   return {
     id: recipe.id,
     name: recipe.name,
     author: recipe.author,
-    ingredients: recipe.ingredients,
     instructions: recipe.instructions,
     prep_time: recipe.prep_time,
     servings: recipe.servings,
@@ -135,8 +329,11 @@ function makeMaliciousRecipe() {
 }
 
 function makeRecipesFixtures() {
-  const testRecipes = makeRecipesArray();
-  return { testRecipes };
+  const testUsers = makeUsersArray();
+  const testUnits = makeUnitsArray();
+  const testRecipes = makeRecipesArray(testUsers);
+  const testIngredients = makeIngredientsArray(testRecipes, testUnits);
+  return { testUsers, testUnits, testRecipes, testIngredients };
 }
 
 
@@ -144,30 +341,46 @@ function cleanTables(db) {
   return db.transaction(trx =>
     trx.raw(
       `TRUNCATE
-        recipes
+        ingredients,
+        recipes,
+        units,
+        users
         RESTART IDENTITY CASCADE;
         `
     )
   );
 }
 
-// TODO reference line 227 in blogful-api-auth when users implemented.
-function seedRecipesTables(db, recipes) {
-  return db.into('recipes').insert(recipes);
+function seedUsers(db, users) {
+  const preppedUsers = users.map(user => ({
+    ...user,
+    password: bcrypt.hashSync(user.password, 1)
+  }));
+  return db.into('users').insert(preppedUsers);
 }
 
-
-//Add '.then' for users when implemented.
-function seedMaliciousRecipe(db, recipe) {
-  return db
-    .into('recipes')
-    .insert([recipe]);
+function seedRecipesTables(db, users, units, recipes, ingredients) {
+  return db.transaction(async trx => {
+    await seedUsers(trx, users);
+    await trx.into('units').insert(units);
+    await trx.into('recipes').insert(recipes);
+    await trx.into('ingredients').insert(ingredients);
+  });
 }
 
-// function makeAuthHeader(user) {
-//   const token = Buffer.from(`${user.user_name}:${user.password}`).toString('base64')
-//   return `Basic ${token}`
-// }
+function seedMaliciousRecipe(db, user, recipe) {
+  return seedUsers(db, [user])
+    .then(() =>
+      db
+        .into('recipes')
+        .insert([recipe])
+    );
+}
+
+function makeAuthHeader(user) {
+  const token = Buffer.from(`${user.user_name}:${user.password}`).toString('base64')
+  return `Basic ${token}`;
+}
 
 module.exports = {
   //Test Data
@@ -183,6 +396,6 @@ module.exports = {
   makeExpectedRecipe,
   seedMaliciousRecipe,
 
-  //Authentication(Not implemented yet)
-  // makeAuthHeader
+  //Authentication
+  makeAuthHeader
 };

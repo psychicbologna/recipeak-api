@@ -7,6 +7,7 @@ const express = require('express'),
 
 //Routers
 const recipesRouter = require('./recipes/recipes-router');
+const authRouter = require('./auth/auth-router');
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(helmet());
 app.use(cors());
 
 app.use('/api/recipes', recipesRouter);
+app.use('/api/auth', authRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;

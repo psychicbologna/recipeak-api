@@ -7,7 +7,10 @@ describe('Recipes Endpoints', function () {
   // console.dir(helpers);
 
   const {
-    testRecipes
+    testUsers,
+    testUnits,
+    testRecipes,
+    testIngredients,
   } = helpers.makeRecipesFixtures();
 
   before('make knex instance', () => {
@@ -20,9 +23,9 @@ describe('Recipes Endpoints', function () {
 
   after('disconnect from db', () => db.destroy());
 
-  before('cleanup', () => db('recipes').truncate());
+  before('cleanup', () => helpers.cleanTables(db));
 
-  afterEach('cleanup', () => db('recipes').truncate());
+  afterEach('cleanup', () => helpers.cleanTables(db));
 
   describe('GET /api/recipes', () => {
     context('Given no recipes in database', () => {
@@ -38,9 +41,14 @@ describe('Recipes Endpoints', function () {
     beforeEach('insert recipes', () => {
       return helpers.seedRecipesTables(
         db,
-        testRecipes
+        testUsers,
+        testUnits,
+        testRecipes,
+        testIngredients
       );
     });
+
+    afterEach('cleanup', () => helpers.cleanTables(db));
 
     it('responds with 200 and all of the recipes', () => {
       const expectedRecipes = testRecipes.map(recipe => (

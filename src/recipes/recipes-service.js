@@ -53,12 +53,6 @@ const RecipesService = {
       .where('recipe_id', recipe_id);
   },
 
-  getAllUnitSets(db){
-    return db
-      .from('units')
-      .select('*');
-  },
-
   getUnitSetData(db, unit_set) {
     return db
       .from('units')
