@@ -6,9 +6,8 @@ const express = require('express'),
   { NODE_ENV } = require('./config');
 
 //Routers
-const recipesRouter = require('./recipes/recipes-router');
-const authRouter = require('./auth/auth-router');
-
+const recipesRouter = require('./recipes/recipes-router'),
+  authRouter = require('./auth/auth-router');
 const app = express();
 
 const morganOption = (NODE_ENV === 'production');
