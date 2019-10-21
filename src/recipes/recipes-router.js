@@ -1,7 +1,6 @@
-//New call for ingredients needed, as well as refactoring for new data structures!
-
 const express = require('express'),
   RecipesService = require('./recipes-service'),
+  IngredientsService = require('./ingredients-service'),
   { requireAuth } = require('../middleware/jwt-auth');
 
 const recipesRouter = express.Router();
@@ -38,32 +37,11 @@ recipesRouter
 
 recipesRouter
   .route('/:recipe_id')
-  .all(requireAuth)
+  // .all(requireAuth)
   .all(checkRecipeExists)
   .get((req, res) => {
     res.json(RecipesService.serializeRecipe(res.recipe));
   });
-
-recipesRouter.route('/:recipe_id/ingredients/')
-  .all(requireAuth)
-  .all(checkRecipeExists)
-  .get((req, res, next) => {
-    RecipesService.getIngredientsForRecipe(
-      req.app.get('db'),
-      req.params.recipe_id
-    )
-      .then(ingredients => {
-        const promises = ingredients.map(ingredient =>
-          RecipesService.serializeRecipeIngredient(req.app.get('db'), ingredient)
-        );
-        Promise.all(promises)
-          .then( ingredients_data => {
-            return res.json(ingredients_data)
-          });
-      })
-      .catch(next);
-  });
-
 
 /* async/await syntax for promises */
 async function checkRecipeExists(req, res, next) {

@@ -1,6 +1,6 @@
-//TODO restructure these for the new data structure!
-
 const xss = require('xss');
+const parse = require('postgres-interval');
+
 
 const RecipesService = {
   //TODO: Make auth only
@@ -40,19 +40,6 @@ const RecipesService = {
       .first();
   },
 
-  getIngredientsForRecipe(db, recipe_id) {
-    return db
-      .from('ingredients AS ing')
-      .select(
-        'ing.id',
-        'ing.amt',
-        'ing.unit_set',
-        'ing.unit_data',
-        'ing.ingredient',
-      )
-      .where('recipe_id', recipe_id);
-  },
-
   getUnitSetData(db, unit_set) {
     return db
       .from('units')
@@ -80,32 +67,12 @@ const RecipesService = {
       name: xss(recipe.name),
       author: xss(recipe.author),
       instructions: xss(recipe.instructions),
-      prep_time: recipe.prep_time,
+      prep_time: recipe.prep_time.toPostgres(),
       servings: Number(recipe.servings),
       date_created: new Date(recipe.date_created),
       date_modified: new Date(recipe.date_modified) || null
     };
   },
-
-  serializeRecipeIngredient(db, ingredient) {
-    const returndata = {
-      id: ingredient.id,
-      recipe_id: ingredient.recipe_id,
-      amount: ingredient.amt,
-      unit_set: ingredient.unit_set,
-      ingredientText: xss(ingredient.ingredient),
-    };
-    if (!ingredient.unit_set) {
-      returndata.unit_data = ingredient.unit_data;
-      return returndata;
-    } else {
-      return this.getUnitSetData(db, ingredient.unit_set)
-        .then(ud => {
-          returndata.unit_data = ud[0].unit_data;
-          return returndata;
-        });
-    }
-  }
 };
 
 module.exports = RecipesService;

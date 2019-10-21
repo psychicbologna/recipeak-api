@@ -51,7 +51,7 @@ describe('Recipes Endpoints', function () {
 
     afterEach('cleanup', () => helpers.cleanTables(db));
 
-    it('responds with 200 and all of the recipes', () => {
+    it('responds with 200 and all of the public recipes', () => {
       const expectedRecipes = testRecipes.map(recipe => (
         helpers.makeExpectedRecipe(
           recipe
@@ -60,6 +60,7 @@ describe('Recipes Endpoints', function () {
       );
       return supertest(app)
         .get('/api/recipes')
+        .where('recipe_public', true)
         .expect(200, expectedRecipes);
     });
   });
