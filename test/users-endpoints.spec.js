@@ -1,4 +1,5 @@
 const knex = require('knex'),
+  bcrypt = require('bcryptjs'),
   app = require('../src/app'),
   helpers = require('./test-helpers');
 
@@ -66,7 +67,7 @@ describe.only('Users Endpoints', function () {
       });
       it(`responds 400 error when password starts with spaces`, () => {
         const userPasswordStartsSpaces = {
-          username: 'test user_name',
+          username: 'test username',
           password: ' 1Aa!2Bb@',
           first_name: 'test first_name',
           last_name: 'test last_name',
@@ -78,7 +79,7 @@ describe.only('Users Endpoints', function () {
       });
       it(`responds 400 error when password ends with spaces`, () => {
         const userPasswordEndsSpaces = {
-          username: 'test user_name',
+          username: 'test username',
           password: '1Aa!2Bb@ ',
           first_name: 'test first_name',
           last_name: 'test last_name',
@@ -90,7 +91,7 @@ describe.only('Users Endpoints', function () {
       });
       it(`responds 400 error when password isn't complex enough`, () => {
         const userPasswordNotComplex = {
-          username: 'test user_name',
+          username: 'test username',
           password: '11AAaabb',
           first_name: 'test first_name',
           last_name: 'test last_name',
@@ -100,7 +101,7 @@ describe.only('Users Endpoints', function () {
           .send(userPasswordNotComplex)
           .expect(400, { error: `Password must contain 1 upper case, lower case, number and special character` });
       });
-      it.only(`responds 400 'User name already taken' when username isn't unique`, () => {
+      it(`responds 400 'Username already taken' when username isn't unique`, () => {
         const duplicateUser = {
           username: testUser.username,
           password: '11AAaa!!',
@@ -113,6 +114,50 @@ describe.only('Users Endpoints', function () {
           .expect(400, { error: `Username already taken` });
       });
     });
-  });
+    context.only('Happy path', () => {
+      it('responds 201, serialized user, storing bcrypted password', () => {
+        const newUser = {
+          username: 'test user_name',
+          password: '11AAaa!!',
+          first_name: 'test first_name',
+          last_name: 'test last_name',
+        };
+        return supertest(app)
+          .post('/api/users')
+          .send(newUser)
+          .expect(201)
+          .expect(res => {
+            expect(res.body).to.have.property('id');
+            expect(res.body.username).to.eql(newUser.username);
+            expect(res.body.first_name).to.eql(newUser.first_name);
+            expect(res.body.last_name).to.eql(newUser.last_name);
+            expect(res.body).to.not.have.property('password');
+            expect(res.headers.location).to.eql(`/api/users/${res.body.id}`);
+            const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' });
+            const actualDate = new Date(res.body.date_created).toLocaleString();
+            expect(actualDate).to.eql(expectedDate);
+          })
+          .expect(res =>
+            db
+              .from('users')
+              .select('*')
+              .where({ id: res.body.id })
+              .first()
+              .then(row => {
+                expect(row.username).to.eql(newUser.username);
+                expect(row.first_name).to.eql(newUser.first_name);
+                expect(row.last_name).to.eql(newUser.last_name);
+                const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' });
+                const actualDate = new Date(row.date_created).toLocaleString();
+                expect(actualDate).to.eql(expectedDate);
 
+                return bcrypt.compare(newUser.password, row.password);
+              })
+              .then(compareMatch => {
+                expect(compareMatch).to.be.true;
+              })
+          );
+      });
+    });
+  });
 });

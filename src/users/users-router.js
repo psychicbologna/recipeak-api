@@ -1,13 +1,13 @@
 const express = require('express');
-
+const path = require('path');
 const usersRouter = express.Router(),
-  usersService = require('./users-service');
+  UsersService = require('./users-service');
 
 const jsonBodyParser = express.json();
 
 usersRouter
   .post('/', jsonBodyParser, (req, res, next) => {
-    const { password, username } = req.body;
+    const { password, username, first_name, last_name } = req.body;
 
     for (const field of ['first_name', 'last_name', 'username', 'password'])
       if (!req.body[field])
@@ -15,19 +15,40 @@ usersRouter
           error: `Missing '${field}' in request body`
         });
 
-    const passwordError = usersService.validatePassword(password);
+    const passwordError = UsersService.validatePassword(password);
 
     if (passwordError)
       return res.status(400).json({ error: passwordError });
 
-    usersService.hasUserWithUsername(
+    UsersService.hasUserWithUsername(
       req.app.get('db'),
       username
     )
       .then(hasUserWithUsername => {
         if (hasUserWithUsername)
           return res.status(400).json({ error: 'Username already taken' });
-        res.send('ok');
+
+        return UsersService.hashPassword(password)
+          .then(hashedPassword => {
+            const newUser = {
+              username,
+              password: hashedPassword,
+              first_name,
+              last_name,
+              date_created: 'now()',
+            };
+
+            return UsersService.insertUser(
+              req.app.get('db'),
+              newUser
+            )
+              .then(user => {
+                res
+                  .status(201)
+                  .location(path.posix.join(req.originalUrl, `/${user.id}`))
+                  .json(UsersService.serializeUser(user));
+              });
+          });
       })
       .catch(next);
   });
