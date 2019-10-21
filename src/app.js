@@ -7,7 +7,8 @@ const express = require('express'),
 
 //Routers
 const recipesRouter = require('./recipes/recipes-router'),
-  authRouter = require('./auth/auth-router');
+  authRouter = require('./auth/auth-router'),
+  usersRouter = require('./users/users-router');
 const app = express();
 
 const morganOption = (NODE_ENV === 'production');
@@ -18,6 +19,7 @@ app.use(cors());
 
 app.use('/api/recipes', recipesRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/users', usersRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;
