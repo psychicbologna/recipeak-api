@@ -3,7 +3,7 @@ const knex = require('knex'),
   app = require('../src/app'),
   helpers = require('./test-helpers');
 
-describe.only('Users Endpoints', function () {
+describe('Users Endpoints', function () {
   let db;
 
   const { testUsers } = helpers.makeRecipesFixtures(),
@@ -114,7 +114,7 @@ describe.only('Users Endpoints', function () {
           .expect(400, { error: `Username already taken` });
       });
     });
-    context.only('Happy path', () => {
+    context('Happy path', () => {
       it('responds 201, serialized user, storing bcrypted password', () => {
         const newUser = {
           username: 'test user_name',
