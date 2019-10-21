@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs'),
-  uuid = require('uuid');
+  uuid = require('uuid'),
+  jwt = require('jsonwebtoken');
 
 //TODO stage ingredients/units, alter ingredients to take them
 
@@ -377,9 +378,12 @@ function seedMaliciousRecipe(db, user, recipe) {
     );
 }
 
-function makeAuthHeader(user) {
-  const token = Buffer.from(`${user.username}:${user.password}`).toString('base64');
-  return `Basic ${token}`;
+function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+  const token = jwt.sign({ user_id: user.id }, secret, {
+    subject: user.username,
+    algorithm: 'HS256',
+  });
+  return `Bearer ${token}`;
 }
 
 module.exports = {
