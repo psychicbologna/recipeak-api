@@ -1,9 +1,20 @@
 const express = require('express');
 const path = require('path');
 const usersRouter = express.Router(),
-  UsersService = require('./users-service');
+  UsersService = require('./users-service'),
+  RecipesService = require('../recipes/recipes-service'),
+  { requireAuth } = require('../middleware/jwt-auth');
 
 const jsonBodyParser = express.json();
+
+usersRouter
+  .route('/home/:username')
+  .all(requireAuth)
+  .get((req, res, next) => {
+    UsersService.getAllUserRecipes( req.app.get('db'), req.user.username )
+      .then(recipes => { res.json(recipes.map(RecipesService.serializeRecipe)); })
+      .catch(next);
+  });
 
 usersRouter
   .post('/', jsonBodyParser, (req, res, next) => {

@@ -10,7 +10,13 @@ const UsersService = {
       .first()
       .then(user => !!user);
   },
-
+  getUserByUsername(db, username) {
+    return db
+      .from('users')
+      .select('*')
+      .where({ username })
+      .first();
+  },
   insertUser(db, newUser) {
     return db
       .insert(newUser)
@@ -18,7 +24,6 @@ const UsersService = {
       .returning('*')
       .then(([user]) => user);
   },
-
   validatePassword(password) {
     if (password.length < 8) {
       return 'Password must be longer than 8 characters';
@@ -48,6 +53,13 @@ const UsersService = {
       username: xss(user.username),
       date_created: new Date(user.date_created)
     };
+  },
+  //TODO: Retrieves all recipes of a given user; future consideration, split this into public/private
+  getAllUserRecipes(db, userId) {
+    return db
+      .from('recipes')
+      .select('*')
+      .where('recipes.user_id', userId);
   },
 };
 
