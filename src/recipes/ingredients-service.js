@@ -31,14 +31,21 @@ const IngredientsService = {
       .delete();
   },
 
-  updateRecipe(db, id, newRecipeFields) {
+  updateIngredient(db, id, newIngredientFields) {
     return db
       .from('ingredients')
       .where({ id })
-      .update(newRecipeFields);
+      .update(newIngredientFields);
   },
 
-  serializeRecipeIngredient(db, ingredient) {
+  getUnitSetData(db, unit_set) {
+    return db
+      .from('units')
+      .select('unit_data')
+      .where('unit_set', unit_set);
+  },
+
+  serializeGetRecipeIngredient(db, ingredient) {
     const returndata = {
       id: ingredient.id,
       recipe_id: ingredient.recipe_id,
@@ -52,10 +59,22 @@ const IngredientsService = {
     } else {
       return this.getUnitSetData(db, ingredient.unit_set)
         .then(ud => {
-          returndata.unit_data = xss(ud[0].unit_data);
+          returndata.unit_data = ud[0].unit_data;
           return returndata;
         });
     }
+    
+  },
+
+  serializePostRecipeIngredient(ingredient, recipe_id) {
+    return {
+      id: ingredient.id,
+      recipe_id: recipe_id,
+      amount: ingredient.amt,
+      unit_set: ingredient.unit_set,
+      unit_data: ingredient.unit_data,
+      ingredient: xss(ingredient.ingredient),
+    };
   }
 };
 
