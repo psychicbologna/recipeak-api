@@ -2,7 +2,7 @@ const knex = require('knex'),
   app = require('../src/app'),
   helpers = require('../test/test-helpers');
 
-describe('Recipes Endpoints', function () {
+describe.only('Recipes Endpoints', function () {
   let db;
   // console.dir(helpers);
 
@@ -53,14 +53,12 @@ describe('Recipes Endpoints', function () {
 
     it('responds with 200 and all of the public recipes', () => {
       const expectedRecipes = testRecipes.map(recipe => (
-        helpers.makeExpectedRecipe(
-          recipe
-        )
+        helpers.makeExpectedRecipe(recipe)
       )
       );
       return supertest(app)
         .get('/api/recipes')
-        .where('recipe_public', true)
+        .where('recipe_public', 'true')
         .expect(200, expectedRecipes);
     });
   });
