@@ -166,7 +166,7 @@ INSERT INTO
 ('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', 1, 'imp_thdcup', 'prepared marinara'),
 ('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', 3, 'imp_thdcup', 'coarsely grated low-moisture mozzarella'),
 ('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', .5, 'x', 'small fennel bulb, very thinly sliced'),
-('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', 3, 'apprx_clv', 'cloves of garlic, very thinly sliced'),
+('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', 3, 'apprx_clv', 'garlic, very thinly sliced'),
 ('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', 0, 'none', 'Crushed red pepper flakes and torn basil leaves (for serving)'),
 
 ('4783af4f-3766-48f4-9d43-40566189052a', 12, 'imp_oz', 'secret store-bought pizza dough'),
@@ -176,10 +176,10 @@ INSERT INTO
 ('4783af4f-3766-48f4-9d43-40566189052a', 1, 'imp_thdcup', 'prepared marinara'),
 ('4783af4f-3766-48f4-9d43-40566189052a', 3, 'imp_thdcup', 'secret coarsely grated low-moisture mozzarella'),
 ('4783af4f-3766-48f4-9d43-40566189052a', .5, 'x', 'small fennel bulb, very thinly sliced'),
-('4783af4f-3766-48f4-9d43-40566189052a', 3, 'apprx_clv', 'cloves of garlic, very thinly sliced'),
+('4783af4f-3766-48f4-9d43-40566189052a', 3, 'apprx_clv', 'garlic, very thinly sliced'),
 ('4783af4f-3766-48f4-9d43-40566189052a', 0, 'none', 'Crushed red pepper flakes and torn basil leaves (for serving)'),
 
-('4a8d066b-9b5a-425a-9ef3-f04f364d3460', 1, 'apprx_hlv', 'half of an onion, chopped'),
+('4a8d066b-9b5a-425a-9ef3-f04f364d3460', 1, 'apprx_hlv', 'onion, chopped'),
 ('4a8d066b-9b5a-425a-9ef3-f04f364d3460', 3, 'apprx_clv', 'garlic, minced'),
 ('4a8d066b-9b5a-425a-9ef3-f04f364d3460', 1, 'x', 'jalapeno, seeded and minced'),
 ('4a8d066b-9b5a-425a-9ef3-f04f364d3460', 2, 'x', 'large sweet potatoes, peeled and diced'),
