@@ -25,26 +25,28 @@ const RecipesService = {
       .select('*')
       .where('recipe_public', 'true');
   },
-  //TODO: Retrieves all recipes of a given user; future consideration, split this into public/private
-  getAllUserRecipes(db, userid) {
-    return db
-      .from('recipes')
-      .select('*')
-      .where('user_id', userid);
-  },
   getById(db, id) {
-    return db
-      .from('recipes')
-      .select('*')
-      .where({ id })
+    let recipe_data = db
+      .from('recipes AS rec')
+      .where('rec.id', id)
+      .select(
+        'rec.id',
+        'rec.name',
+        'rec.author',
+        'rec.prep_time',
+        'rec.instructions',
+        'rec.servings',
+        'rec.date_created',
+        'rec.date_modified'
+      )
       .first();
+
+    return recipe_data;
   },
 
-  getUnitSetData(db, unit_set) {
-    return db
-      .from('units')
-      .select('unit_data')
-      .where('unit_set', unit_set);
+  insertRecipe(db, id, newRecipeFields) {
+    return db('recipes')
+      .where({ id })
   },
 
   deleteRecipe(db, id) {
@@ -62,6 +64,7 @@ const RecipesService = {
   },
 
   serializeRecipe(recipe) {
+    // return recipe;
     return {
       id: recipe.id,
       name: xss(recipe.name),
@@ -70,7 +73,8 @@ const RecipesService = {
       prep_time: recipe.prep_time.toPostgres(),
       servings: Number(recipe.servings),
       date_created: new Date(recipe.date_created),
-      date_modified: new Date(recipe.date_modified) || null
+      date_modified: new Date(recipe.date_modified) || null,
+      ingredients: recipe.inglist
     };
   },
 };
