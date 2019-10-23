@@ -7,12 +7,16 @@ const usersRouter = express.Router(),
 
 const jsonBodyParser = express.json();
 
+
 usersRouter
-  .route('/home/:username')
+  .route('/me')
   .all(requireAuth)
   .get((req, res, next) => {
-    UsersService.getAllUserRecipes( req.app.get('db'), req.user.username )
-      .then(recipes => { res.json(recipes.map(RecipesService.serializeRecipe)); })
+    UsersService.getAllUserRecipes(req.app.get('db'), req.user.id) //TODO pull username from req
+      .then(recipes => {
+        const userData = {user:req.user, recipes:recipes.map(RecipesService.serializeRecipe)};
+        res.json(userData);
+      })
       .catch(next);
   });
 

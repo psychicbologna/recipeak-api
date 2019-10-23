@@ -10,10 +10,10 @@ const UsersService = {
       .first()
       .then(user => !!user);
   },
-  getUserByUsername(db, username) {
+  getUserIdByUsername(db, username) {
     return db
       .from('users')
-      .select('*')
+      .select('id')
       .where({ username })
       .first();
   },
@@ -23,6 +23,13 @@ const UsersService = {
       .into('users')
       .returning('*')
       .then(([user]) => user);
+  },
+  getUserRecipeCount(db, userId) {
+    return db
+      .from('recipes')
+      .select('*')
+      .with('user_id', userId)
+      .count();
   },
   validatePassword(password) {
     if (password.length < 8) {
