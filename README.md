@@ -43,6 +43,10 @@ When your new project is ready for deployment, add a new Heroku application with
 
 To update, `npm run devlog`
 
+### 2019-10-23
+
+- A lot of new paths are set. Recipe returning list of ingredients and units now in decent shape and sending. Picked out some fonts and colors and got some testing done to get a head start on backed-up progress.
+
 ### 2019-10-18
 
 - Finally happy with data structure.
