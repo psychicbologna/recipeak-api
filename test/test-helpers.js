@@ -4,6 +4,32 @@ const bcrypt = require('bcryptjs'),
 
 //TODO stage ingredients/units, alter ingredients to take them
 
+function makeNewRecipe(testUsers, testUnits) {
+  return {
+    user_id: testUsers[0].id,
+    name: 'Test',
+    author: 'foobar',
+    prep_time: '1 hour 30 minutes',
+    servings: 3,
+    instructions: 'Test do things test do things',
+    ingredients: [
+      {
+        amount: 3,
+        ing_text: 'Test 1',
+        unit_set: testUnits[0].unit_set
+      },
+      {
+        amount: 3,
+        ing_text: 'Test 2',
+        unit_data: {
+          unit_single: 'test', //TODO make sure each ingredient tests all aspect of ingredient functionality.
+          unit_plural: 'test'
+        }
+      },
+    ]
+  };
+}
+
 function makeUsersArray() {
   return [
     {
@@ -43,19 +69,23 @@ function makeUsersArray() {
 
 function makeUnitsArray() {
   return [
-    { id: 1,
+    {
+      id: 1,
       unit_set: 'test-1',
       unit_data: '{"unit_single":"t1", "unit_plural":"t1s"}'
     },
-    { id: 2,
+    {
+      id: 2,
       unit_set: 'test-2',
       unit_data: '{"unit_single":"t2", "unit_plural":"t2s"}'
     },
-    { id: 3,
+    {
+      id: 3,
       unit_set: 'test-3',
       unit_data: '{"unit_single":"t3", "unit_plural":"t3s"}'
     },
-    { id: 4,
+    {
+      id: 4,
       unit_set: 'test-4',
       unit_data: '{"unit_single":"t4", "unit_plural":"t4s"}'
     },
@@ -123,25 +153,25 @@ function makeIngredientsArray(recipes, units) {
       recipe_id: recipes[0].id,
       amt: 1,
       unit_set: units[0].unit_set,
-      ingredient: 'test-ingredient-1',
+      ing_text: 'test-ingredient-1',
     },
     {
       recipe_id: recipes[0].id,
       amt: 1,
       unit_set: units[1].unit_set,
-      ingredient: 'test-ingredient-2',
+      ing_text: 'test-ingredient-2',
     },
     {
       recipe_id: recipes[0].id,
       amt: 1,
       unit_set: units[2].unit_set,
-      ingredient: 'test-ingredient-3',
+      ing_text: 'test-ingredient-3',
     },
     {
       recipe_id: recipes[0].id,
       amt: 1,
       unit_set: units[3].unit_set,
-      ingredient: 'test-ingredient-4',
+      ing_text: 'test-ingredient-4',
     },
     // {
     //   recipe_id: recipes[0].id,
@@ -151,31 +181,31 @@ function makeIngredientsArray(recipes, units) {
     //     unit_single: 'custom-unit',
     //     unit_plural: 'custom-unit'
     //   },
-    //   ingredient: 'test-ingredient-5',
+    //   ing_test: 'test-ingredient-5',
     // },
     // {
     //   recipe_id: recipes[1].id,
     //   amt: 1,
     //   unit_set: units[0].unit_set,
-    //   ingredient: 'test-ingredient-1',
+    //   ing_test: 'test-ingredient-1',
     // },
     // {
     //   recipe_id: recipes[1].id,
     //   amt: 1,
     //   unit_set: units[1].unit_set,
-    //   ingredient: 'test-ingredient-2',
+    //   ing_test: 'test-ingredient-2',
     // },
     // {
     //   recipe_id: recipes[1].id,
     //   amt: 1,
     //   unit_set: units[2].unit_set,
-    //   ingredient: 'test-ingredient-3',
+    //   ing_test: 'test-ingredient-3',
     // },
     // {
     //   recipe_id: recipes[1].id,
     //   amt: 1,
     //   unit_set: units[3].unit_set,
-    //   ingredient: 'test-ingredient-4',
+    //   ing_test: 'test-ingredient-4',
     // },
     // {
     //   recipe_id: recipes[1].id,
@@ -185,31 +215,31 @@ function makeIngredientsArray(recipes, units) {
     //     unit_single: 'custom-unit',
     //     unit_plural: 'custom-unit'
     //   },
-    //   ingredient: 'test-ingredient-5',
+    //   ing_test: 'test-ingredient-5',
     // },
     // {
     //   recipe_id: recipes[2].id,
     //   amt: 1,
     //   unit_set: units[0].unit_set,
-    //   ingredient: 'test-ingredient-1',
+    //   ing_test: 'test-ingredient-1',
     // },
     // {
     //   recipe_id: recipes[2].id,
     //   amt: 1,
     //   unit_set: units[1].unit_set,
-    //   ingredient: 'test-ingredient-2',
+    //   ing_test: 'test-ingredient-2',
     // },
     // {
     //   recipe_id: recipes[2].id,
     //   amt: 1,
     //   unit_set: units[2].unit_set,
-    //   ingredient: 'test-ingredient-3',
+    //   ing_test: 'test-ingredient-3',
     // },
     // {
     //   recipe_id: recipes[2].id,
     //   amt: 1,
     //   unit_set: units[3].unit_set,
-    //   ingredient: 'test-ingredient-4',
+    //   ing_test: 'test-ingredient-4',
     // },
     // {
     //   recipe_id: recipes[2].id,
@@ -219,31 +249,31 @@ function makeIngredientsArray(recipes, units) {
     //     unit_single: 'custom-unit',
     //     unit_plural: 'custom-unit'
     //   },
-    //   ingredient: 'test-ingredient-5',
+    //   ing_test: 'test-ingredient-5',
     // },
     // {
     //   recipe_id: recipes[3].id,
     //   amt: 1,
     //   unit_set: units[0].unit_set,
-    //   ingredient: 'test-ingredient-1',
+    //   ing_test: 'test-ingredient-1',
     // },
     // {
     //   recipe_id: recipes[3].id,
     //   amt: 1,
     //   unit_set: units[1].unit_set,
-    //   ingredient: 'test-ingredient-2',
+    //   ing_test: 'test-ingredient-2',
     // },
     // {
     //   recipe_id: recipes[3].id,
     //   amt: 1,
     //   unit_set: units[2].unit_set,
-    //   ingredient: 'test-ingredient-3',
+    //   ing_test: 'test-ingredient-3',
     // },
     // {
     //   recipe_id: recipes[3].id,
     //   amt: 1,
     //   unit_set: units[3].unit_set,
-    //   ingredient: 'test-ingredient-4',
+    //   ing_test: 'test-ingredient-4',
     // },
     // {
     //   recipe_id: recipes[3].id,
@@ -253,31 +283,31 @@ function makeIngredientsArray(recipes, units) {
     //     unit_single: 'custom-unit',
     //     unit_plural: 'custom-unit'
     //   },
-    //   ingredient: 'test-ingredient-5',
+    //   ing_test: 'test-ingredient-5',
     // },
     // {
     //   recipe_id: recipes[4].id,
     //   amt: 1,
     //   unit_set: units[0].unit_set,
-    //   ingredient: 'test-ingredient-1',
+    //   ing_test: 'test-ingredient-1',
     // },
     // {
     //   recipe_id: recipes[4].id,
     //   amt: 1,
     //   unit_set: units[1].unit_set,
-    //   ingredient: 'test-ingredient-2',
+    //   ing_test: 'test-ingredient-2',
     // },
     // {
     //   recipe_id: recipes[4].id,
     //   amt: 1,
     //   unit_set: units[2].unit_set,
-    //   ingredient: 'test-ingredient-3',
+    //   ing_test: 'test-ingredient-3',
     // },
     // {
     //   recipe_id: recipes[4].id,
     //   amt: 1,
     //   unit_set: units[3].unit_set,
-    //   ingredient: 'test-ingredient-4',
+    //   ing_test: 'test-ingredient-4',
     // },
     // {
     //   recipe_id: recipes[4].id,
@@ -287,7 +317,7 @@ function makeIngredientsArray(recipes, units) {
     //     unit_single: 'custom-unit',
     //     unit_plural: 'custom-unit'
     //   },
-    //   ingredient: 'test-ingredient-5',
+    //   ing_test: 'test-ingredient-5',
     // },
   ];
 }
@@ -304,37 +334,51 @@ function makeExpectedRecipe(recipe) {
   };
 }
 
-function makeMaliciousRecipe() {
-  const maliciousArticle = {
-    id: uuid(),
-    name: 'A Foul Name <script>alert("xss");</script>',
-    author: 'Jim Fakeman',
-    ingredients: [
-      'Sadness<script>alert("xss");</script>', 'Madness<script>alert("xss");</script>', 'Gladness<script>alert("xss");</script>'
-    ],
-    instructions: '<img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);"><em>Do the things!</em>',
-    prep_time: '30 minutes',
-    servings: 3,
-    date_created: new Date('2029-01-22T16:28:32.615Z')
-  };
-  const expectedArticle = {
-    ...makeExpectedRecipe(maliciousArticle),
-    name: 'A Foul Name &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
-    ingredients: ['Sadness&lt;script&gt;alert(\"xss\");&lt;/script&gt;', 'Madness&lt;script&gt;alert(\"xss\");&lt;/script&gt;', 'Gladness&lt;script&gt;alert(\"xss\");&lt;/script&gt;'],
-    instructions: '<img src="https://url.to.file.which/does-not.exist"><em>Do the things!</em>',
-  };
-  return {
-    maliciousArticle,
-    expectedArticle
-  };
-}
+// function makeMaliciousRecipe() {
+//   const maliciousArticle = {
+//     id: uuid(),
+//     name: 'A Foul Name <script>alert("xss");</script>',
+//     author: 'Jim Fakeman<script>alert("xss")</script>',
+//     instructions: 'Gladness<script>alert("xss");</script>',
+//     ingredients: [
+//       {
+//         id: uuid(),
+//         name: 'Sadness<script>alert("xss");</script>',
+//         ing_text: 'Madness<script>alert("xss");</script>',
+//         unit_set: testUnits[0].unit_set
+//       },
+
+//       {
+//         id: uuid(),
+//         name: 'Sadness<script>alert("xss");</script>',
+//         ing_text: 'Madness<script>alert("xss");</script>',
+//         unit_data: {
+//           unit_single: 'Gladness<script>alert("xss");</script>',
+//           unit_single: 'Gladness<script>alert("xss");</script>'
+//         }
+//       }
+//     ],
+//     date_created: new Date('2029-01-22T16:28:32.615Z')
+//   };
+// const expectedArticle = {
+//   ...makeExpectedRecipe(maliciousArticle),
+//   name: 'A Foul Name &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
+//   ingredients: ['Sadness&lt;script&gt;alert(\"xss\");&lt;/script&gt;', 'Madness&lt;script&gt;alert(\"xss\");&lt;/script&gt;', 'Gladness&lt;script&gt;alert(\"xss\");&lt;/script&gt;'],
+//   instructions: '<img src="https://url.to.file.which/does-not.exist"><em>Do the things!</em>',
+// };
+// return {
+//   maliciousArticle,
+//   expectedArticle
+// };
+// }
 
 function makeRecipesFixtures() {
   const testUsers = makeUsersArray();
   const testUnits = makeUnitsArray();
   const testRecipes = makeRecipesArray(testUsers);
   const testIngredients = makeIngredientsArray(testRecipes, testUnits);
-  return { testUsers, testUnits, testRecipes, testIngredients };
+  const testNewRecipe = makeNewRecipe(testUsers, testUnits, testIngredients);
+  return { testUsers, testUnits, testNewRecipe, testRecipes, testIngredients };
 }
 
 
@@ -358,6 +402,10 @@ function seedUsers(db, users) {
     password: bcrypt.hashSync(user.password, 1)
   }));
   return db.into('users').insert(preppedUsers);
+}
+
+function seedUnits(db, units) {
+  return db.into('units').insert(units);
 }
 
 function seedRecipesTables(db, users, units, recipes, ingredients) {
@@ -388,6 +436,7 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
 
 module.exports = {
   //Test Data
+  makeNewRecipe,
   makeRecipesArray,
   seedRecipesTables,
   cleanTables,
@@ -397,7 +446,7 @@ module.exports = {
   makeRecipesFixtures,
 
   //XSS Testing
-  makeMaliciousRecipe,
+  // makeMaliciousRecipe,
   makeExpectedRecipe,
   seedMaliciousRecipe,
 
