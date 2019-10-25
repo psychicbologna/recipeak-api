@@ -44,9 +44,10 @@ const RecipesService = {
     return recipe_data;
   },
 
-  insertRecipe(db, id, newRecipeFields) {
+  insertRecipe(db, id, newRecipe) {
     return db('recipes')
       .where({ id })
+      .insert(newRecipe);
   },
 
   deleteRecipe(db, id) {
