@@ -83,10 +83,10 @@ describe('Auth Endpoints', function () {
       process.env.JWT_SECRET,
       {
         subject: testUser.username,
+        expiresIn: process.env.JWT_EXPIRY,
         algorithm: 'HS256',
       }
     );
-    console.log(userValidCreds);
     return supertest(app)
       .post('/api/auth/login')
       .send(userValidCreds)
