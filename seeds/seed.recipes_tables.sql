@@ -156,7 +156,7 @@ INSERT INTO
     recipe_id,
     amt,
     unit_set,
-    ingredient
+    ing_text
   )
   VALUES
 ('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', 12, 'us_oz', 'store-bought pizza dough'),

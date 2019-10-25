@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS ingredients (
   amt FLOAT,
   unit_set TEXT REFERENCES units(unit_set) DEFAULT 'none',
   unit_data jsonb,
-  ingredient TEXT NOT NULL,
+  ing_text TEXT NOT NULL,
   PRIMARY KEY (id, recipe_id)
 );
 
