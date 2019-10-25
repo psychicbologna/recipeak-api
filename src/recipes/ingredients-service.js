@@ -11,7 +11,7 @@ const IngredientsService = {
         'ing.amt',
         'ing.unit_set',
         'ing.unit_data',
-        'ing.ingredient',
+        'ing.ing_text',
       )
       .where('ing.recipe_id', recipe_id);
   },
@@ -22,6 +22,12 @@ const IngredientsService = {
       .select('*')
       .where({ id })
       .first();
+  },
+
+  insertIngredient(db, ingredient) {
+    return db
+      .into('ingredients')
+      .insert({ ingredient });
   },
 
   deleteIngredient(db, id) {
@@ -51,7 +57,7 @@ const IngredientsService = {
       recipe_id: ingredient.recipe_id,
       amount: ingredient.amt,
       unit_set: ingredient.unit_set,
-      ingredient: xss(ingredient.ingredient),
+      ing_text: xss(ingredient.ing_text),
     };
     if (!ingredient.unit_set) {
       returndata.unit_data = ingredient.unit_data;
@@ -63,7 +69,7 @@ const IngredientsService = {
           return returndata;
         });
     }
-    
+
   },
 
   serializePostRecipeIngredient(ingredient, recipe_id) {
@@ -73,7 +79,7 @@ const IngredientsService = {
       amount: ingredient.amt,
       unit_set: ingredient.unit_set,
       unit_data: ingredient.unit_data,
-      ingredient: xss(ingredient.ingredient),
+      ing_text: xss(ingredient.ing_text),
     };
   }
 };
