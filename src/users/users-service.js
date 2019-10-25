@@ -64,9 +64,9 @@ const UsersService = {
   //TODO: Retrieves all recipes of a given user; future consideration, split this into public/private
   getAllUserRecipes(db, userId) {
     return db
-      .from('recipes')
       .select('*')
-      .where('recipes.user_id', userId);
+      .from('recipes')
+      .where('user_id', userId);
   },
 };
 

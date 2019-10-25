@@ -10,10 +10,11 @@ const jsonBodyParser = express.json();
 
 usersRouter
   .route('/me')
+  .all(requireAuth)
   .get((req, res, next) => {
-    console.log(req.id)
-    UsersService.getAllUserRecipes(req.app.get('db'), req.user.id) //TODO pull username from req
+    UsersService.getAllUserRecipes(req.app.get('db'), req.user_id) //TODO pull username from req
       .then(recipes => {
+        console.log(recipes);
         const userData = {user:req.user, recipes:recipes.map(RecipesService.serializeRecipe)};
         res.json(userData);
       })

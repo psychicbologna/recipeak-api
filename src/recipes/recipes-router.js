@@ -19,39 +19,35 @@ recipesRouter
 recipesRouter
   .route('/')
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    res.status(201).json({
-      ...req.body,
-      id: 12,
-    });
-    // const { user_id, name, author, instructions, prep_time, servings, ingredients } = req.body;
-    // const newRecipe = { user_id, name, author, instructions };
+    const { user_id, name, author, instructions, prep_time, servings, ingredients } = req.body;
+    const newRecipe = { user_id, name, author, instructions };
 
-    // for (const [key, value] of Object.entries(newRecipe)) {
-    //   if (value == null) {
-    //     return res.status(400).json({
-    //       error: `Missing ${key} in request body.`
-    //     });
-    //   } else if (!ingredients.length) {
-    //     return res.status(400).json({
-    //       error: 'Missing ingredients.'
-    //     });
-    //   }
-    // }
-    // newRecipe.prep_time = prep_time;
-    // newRecipe.servings = servings;
+    for (const [key, value] of Object.entries(newRecipe)) {
+      if (value == null) {
+        return res.status(400).json({
+          error: `Missing ${key} in request body.`
+        });
+      } else if (!ingredients.length) {
+        return res.status(400).json({
+          error: 'Missing ingredients.'
+        });
+      }
+    }
+    newRecipe.prep_time = prep_time;
+    newRecipe.servings = servings;
 
-    // RecipesService.insertRecipe(
-    //   req.app.get('db'),
-    //   newRecipe
-    // )
-    //   .returning('id')
-    //   .then(id => {
-    //     ingredients.map(ingredient => {
-    //       ingredient.recipe_id = id;
-    //       IngredientsService.insertIngredients(ingredient);
-    //       return res.status(201);
-    //     });
-    //   });
+    RecipesService.insertRecipe(
+      req.app.get('db'),
+      newRecipe
+    )
+      .returning('id')
+      .then(id => {
+        ingredients.map(ingredient => {
+          ingredient.recipe_id = id;
+          IngredientsService.insertIngredients(ingredient);
+          return res.status(201);
+        });
+      });
   });
 
 
