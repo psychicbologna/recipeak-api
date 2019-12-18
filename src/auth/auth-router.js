@@ -6,7 +6,8 @@ const authRouter = express.Router();
 const jsonBodyParser = express.json();
 
 authRouter
-  .post('/login', jsonBodyParser, (req, res, next) => {
+  .route('/login')
+  .post(jsonBodyParser, (req, res, next) => {
     const { username, password } = req.body;
     const loginUser = { username, password };
 
@@ -16,7 +17,7 @@ authRouter
           error: `Missing '${key}' in request body`
         });
 
-    AuthService.getUserWithUsername(
+    return AuthService.getUserWithUsername(
       req.app.get('db'),
       loginUser.username
     )
@@ -34,7 +35,9 @@ authRouter
               });
 
             const sub = dbUser.username;
-            const payload = { user_id: dbUser.id };
+            const payload = {
+              user_id: dbUser.id,
+            };
             res.send({
               authToken: AuthService.createJwt(sub, payload),
             });
@@ -43,12 +46,16 @@ authRouter
       .catch(next);
   });
 
-authRouter.post('/refresh', requireAuth, (req, res) => {
-  const sub = req.user.username;
-  const payload = { user_id: req.user.id };
-  res.send({
-    authToken: AuthService.createJwt(sub, payload),
+authRouter
+  .route('/refresh')
+  .post(requireAuth, (req, res) => {
+    const sub = req.user.username;
+    const payload = {
+      user_id: req.user.id,
+    };
+    res.send({
+      authToken: AuthService.createJwt(sub, payload),
+    });
   });
-});
 
 module.exports = authRouter;

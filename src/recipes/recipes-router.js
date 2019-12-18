@@ -9,7 +9,7 @@ const jsonBodyParser = express.json();
 
 recipesRouter
   .route('/')
-  //TODO require auth. to view all.
+  //Retrieves all recipes.
   .get((req, res, next) => {
     RecipesService.getAllPublicRecipes(req.app.get('db'))
       .then(recipes => { res.json(recipes.map(RecipesService.serializeRecipe)); })
@@ -18,6 +18,7 @@ recipesRouter
 
 recipesRouter
   .route('/')
+  //Post a new recipe.
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { user_id, name, author, instructions, prep_time, servings, ingredients } = req.body;
     const newRecipe = { user_id, name, author, instructions };
@@ -29,7 +30,7 @@ recipesRouter
         });
       } else if (!ingredients.length) {
         return res.status(400).json({
-          error: 'Missing ingredients.'
+          error: 'Missing ingredients. Please enter at least one ingredient.'
         });
       }
     }
@@ -42,51 +43,88 @@ recipesRouter
     )
       .returning('id')
       .then(id => {
+        //Post recipe's ingredients.
         ingredients.map(ingredient => {
           ingredient.recipe_id = id;
           IngredientsService.insertIngredients(ingredient);
           return res.status(201);
         });
       });
-  });
-
+  })
 
 recipesRouter
   .route('/:recipe_id')
-  .all(requireAuth)
   .all(checkRecipeExists)
-  .get((req, res) => {
-    RecipesService.getById(
+  .get(async (req, res, next) => {
+
+    //Retrieve recipe data
+    const recipe = await RecipesService.getById(
       req.app.get('db'),
       req.params.recipe_id
-    )
-      .then(recipe => {
-        res.json(RecipesService.serializeRecipe(recipe));
+    );
+    //Retrieve ingredient data
+    let ingredients = await IngredientsService.getIngredientsByRecipe(
+      req.app.get('db'),
+      req.params.recipe_id
+    );
+
+    //Check if data exists.
+    if (!recipe || !ingredients) {
+      res.status(400).json({
+        error: `Couldn't retrieve this recipe.`
+      });
+    }
+
+    //Create async ingredients promises (requires an SQL interaction with unit database to retrieve all data)
+    const ingredientPromises = ingredients.map(ingredient =>
+      IngredientsService.serializeGetRecipeIngredient(req.app.get('db'), ingredient)
+    );
+
+    //Return results of promises with formatted unit data.
+    ingredients = await Promise.all(ingredientPromises);
+
+    //Prepare payload
+    const payload = {
+      recipe: RecipesService.serializeRecipe(recipe),
+      ingredients: ingredients
+    };
+
+    res.status(200).json(payload);
+  })
+  //Amend a recipe. TODO change id to param.
+  .patch(requireAuth, jsonBodyParser, (req, res, next) => {
+    const { user_id, name, author, instructions, prep_time, servings, ingredients } = req.body;
+    const newRecipe = { user_id, name, author, instructions, prep_time, servings };
+    const newIngredients = ingredients;
+
+    RecipesService.patchRecipe(RecipesService.serializeRecipe(newRecipe))
+      .then(() => {
+        //Amend a recipe's ingredients.
+        newIngredients.map(IngredientsService.serializePostRecipeIngredient);
       });
   });
 
-recipesRouter.route('/:recipe_id/ingredients')
-  .all(requireAuth)
-  .all(checkRecipeExists)
-  .get((req, res, next) => {
-    IngredientsService.getIngredientsByRecipe(
-      req.app.get('db'),
-      req.params.recipe_id
-    )
-      // .then(ingredients => res.json(ingredients))
-      // .catch(next);
-      .then(ingredients => {
-        const promises = ingredients.map(ingredient =>
-          IngredientsService.serializeGetRecipeIngredient(req.app.get('db'), ingredient)
-        );
-        Promise.all(promises)
-          .then(ingredients_data => {
-            return res.json(ingredients_data);
-          });
-      })
-      .catch(next);
-    //TODO Post route!!
-  });
+
+//TODO may be obviated?
+// recipesRouter.route('/:recipe_id/ingredients')
+//   .all(requireAuth)
+//   .all(checkRecipeExists)
+//   .get((req, res, next) => {
+//     IngredientsService.getIngredientsByRecipe(
+//       req.app.get('db'),
+//       req.params.recipe_id
+//     )
+//       .then(ingredients => {
+//         const promises = ingredients.map(ingredient =>
+//           IngredientsService.serializeGetRecipeIngredient(req.app.get('db'), ingredient)
+//         );
+//         Promise.all(promises)
+//           .then(ingredients_data => {
+//             return res.json(ingredients_data);
+//           });
+//       })
+//       .catch(next);
+//   });
 
 
 //TODO patches
@@ -114,7 +152,7 @@ async function checkRecipeExists(req, res, next) {
 
     if (!recipe)
       return res.status(404).json({
-        error: 'Recipe doesn\'t exist.'
+        error: 'Sorry, that recipe doesn\'t exist.'
       });
 
     res.recipe = recipe;

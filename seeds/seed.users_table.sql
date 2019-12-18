@@ -7,7 +7,8 @@ TRUNCATE
 
 INSERT INTO users (id, first_name, last_name, username, password)
   VALUES
-  ('9ba39ce8-0983-4c6c-a781-fae378838c16', 'Alex', 'Admin', 'alex', 'password'),
+  --Password123!
+  ('9ba39ce8-0983-4c6c-a781-fae378838c16', 'Alex', 'Admin', 'alex', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYjEyYzk1YTAtODZiNS00OTg5LWE4ZjMtZmQxM2MzZjM4OTFiIiwiaWF0IjoxNTc2NjIxODQ1LCJleHAiOjE1NzY2NTA2NDUsInN1YiI6ImFkbWluIn0.JtBdSaLwYm7n7LOy2tmd-RmR8noc-3sIGCz_o51URa4'),
   ('b2bb31f7-8c31-4058-8885-9404e2add1c1', 'Claire', 'Saffitz', 'csaffitz01', 'password'),
   ('e58a7042-ecdf-472e-8e3a-1367192f26d6', 'Lindsay', 'Ostrom', 'lOstrom02', 'password'),
   ('922fc3ba-cdc1-4423-a663-e24284e6d537', 'Adam', '', 'adam03', 'password'),

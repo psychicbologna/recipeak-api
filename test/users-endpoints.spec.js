@@ -1,8 +1,8 @@
 const knex = require('knex'),
   bcrypt = require('bcryptjs'),
   app = require('../src/app'),
-  helpers = require('./test-helpers');
-
+  helpers = require('./test-helpers'),
+  config = require('../config');
 describe('Users Endpoints', function () {
   let db;
 
@@ -12,7 +12,7 @@ describe('Users Endpoints', function () {
   before('make knex instance', () => {
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DB_URL,
+      connection: config.TEST_DATABASE_URL,
     });
     app.set('db', db);
   });

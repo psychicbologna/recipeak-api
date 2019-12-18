@@ -62,11 +62,21 @@ const UsersService = {
     };
   },
   //TODO: Retrieves all recipes of a given user; future consideration, split this into public/private
-  getAllUserRecipes(db, userId) {
+  getAllUserData(db, id) {
+    console.log(id);
     return db
+      .from('users')
+      .select('users.first_name', 'users.last_name', 'users.username')
+      .where('id', id)
+      .first();
+  },
+
+  getAllUserRecipes(db, userId) {
+    console.log(userId);
+    return db
+      .from('recipes as rec')
       .select('*')
-      .from('recipes')
-      .where('user_id', userId);
+      .where({ user_id: userId });
   },
 };
 

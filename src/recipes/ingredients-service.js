@@ -59,6 +59,7 @@ const IngredientsService = {
       unit_set: ingredient.unit_set,
       ing_text: xss(ingredient.ing_text),
     };
+    //The async bit: If the ingredient is using custom unit data, retrieve that data instead of the set.
     if (!ingredient.unit_set) {
       returndata.unit_data = ingredient.unit_data;
       return returndata;

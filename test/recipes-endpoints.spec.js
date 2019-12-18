@@ -2,7 +2,8 @@ const knex = require('knex'),
   app = require('../src/app'),
   bcrypt = require('bcryptjs'),
   AuthService = require('../src/auth/auth-service'),
-  helpers = require('../test/test-helpers');
+  helpers = require('../test/test-helpers'),
+  config = require('../config');
 
 describe('Recipes Endpoints', function () {
   let db;
@@ -20,7 +21,7 @@ describe('Recipes Endpoints', function () {
   before('make knex instance', () => {
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DB_URL,
+      connection: config.TEST_DATABASE_URL,
     });
     app.set('db', db);
   });

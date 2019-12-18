@@ -7,9 +7,9 @@
     "test": "mocha --require test/setup.js",
     "dev": "nodemon src/server.js",
     "migrate": "postgrator --config postgrator-config.js",
-    "migrate:test": "env NODE_ENV=test npm run migrate",
-    "seed:api": "psql -U recipeak -d recipeak-api -f ./seeds/seed.recipes_tables.sql",
-    "unseed:api": "psql -U recipeak -d recipeak-api -f ./seeds/trunc.recipes_table.sql",
+    "migrate:test": "set env NODE_ENV=test && npm run migrate",
+    "seed:api": "psql -U recipeak -d recipeak -f ./seeds/seed.recipes_tables.sql",
+    "unseed:api": "psql -U recipeak -d recipeak -f ./seeds/trunc.recipes_table.sql",
     "unseed:test": "psql -U recipeak -d recipeak-api-test -f ./seeds/trunc.recipes_table.sql",
     "start": "node src/server.js",
     "predeploy": "npm audit",
@@ -30,8 +30,9 @@
     "knex": "^0.19.5",
     "measuring-cup": "^1.2.0",
     "morgan": "^1.9.1",
-    "pg": "^7.12.1",
-    "postgres-interval": "^1.2.0",
+    "pg": "^7.15.0",
+    "postgrator": "^3.11.0",
+    "postgrator-cli": "^3.3.0",
     "uuid": "^3.3.3",
     "xss": "^1.0.6"
   },
@@ -39,7 +40,6 @@
     "chai": "^4.2.0",
     "mocha": "^6.2.1",
     "nodemon": "^1.19.3",
-    "postgrator-cli": "^3.3.0",
     "supertest": "^4.0.2"
   }
 }
