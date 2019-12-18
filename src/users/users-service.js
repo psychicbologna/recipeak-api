@@ -61,7 +61,7 @@ const UsersService = {
       date_created: new Date(user.date_created)
     };
   },
-  //TODO: Retrieves all recipes of a given user; future consideration, split this into public/private
+  
   getAllUserData(db, id) {
     console.log(id);
     return db

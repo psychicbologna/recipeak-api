@@ -18,13 +18,6 @@ const RecipesService = {
         'rec.date_modified',
       );
   },
-  //TODO: add this to landing page.
-  getAllPublicRecipes(db) {
-    return db
-      .from('recipes')
-      .select('*')
-      .where('recipe_public', 'true');
-  },
   getById(db, id) {
     let recipe_data = db
       .from('recipes AS rec')

@@ -9,9 +9,8 @@ const jsonBodyParser = express.json();
 
 recipesRouter
   .route('/')
-  //Retrieves all recipes.
   .get((req, res, next) => {
-    RecipesService.getAllPublicRecipes(req.app.get('db'))
+    RecipesService.getAllRecipes(req.app.get('db'))
       .then(recipes => { res.json(recipes.map(RecipesService.serializeRecipe)); })
       .catch(next);
   });
@@ -103,29 +102,6 @@ recipesRouter
         newIngredients.map(IngredientsService.serializePostRecipeIngredient);
       });
   });
-
-
-//TODO may be obviated?
-// recipesRouter.route('/:recipe_id/ingredients')
-//   .all(requireAuth)
-//   .all(checkRecipeExists)
-//   .get((req, res, next) => {
-//     IngredientsService.getIngredientsByRecipe(
-//       req.app.get('db'),
-//       req.params.recipe_id
-//     )
-//       .then(ingredients => {
-//         const promises = ingredients.map(ingredient =>
-//           IngredientsService.serializeGetRecipeIngredient(req.app.get('db'), ingredient)
-//         );
-//         Promise.all(promises)
-//           .then(ingredients_data => {
-//             return res.json(ingredients_data);
-//           });
-//       })
-//       .catch(next);
-//   });
-
 
 //TODO patches
 recipesRouter.route('./ingredients/:ingredient_id')
