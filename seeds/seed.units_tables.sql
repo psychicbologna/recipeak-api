@@ -3,7 +3,7 @@ TRUNCATE
   RESTART IDENTITY CASCADE;
 
 INSERT INTO
-  units (nickname, unit_data)
+  units (unit_set, unit_data)
 VALUES
   ('none', '{"unit_single":"", "unit_plural":""}'),
   ('x','{"unit_single":"x", "unit_plural":"x"}'),
@@ -63,7 +63,7 @@ VALUES
 ('us_cup'   ,'{"class":"us", "cnv_to":"["met_ml"], "cnv_ratio":"236.588", "unit_abbr":"cup"    , "unit_single":"cup"        ,"unit_plural":"cups",        "pt_ratio":"2"}'),
 ('us_pt'    ,'{"class":"us", "cnv_to":"["met_ml"], "cnv_ratio":"473.176", "unit_abbr":"pt"     , "unit_single":"pint"       ,"unit_plural":"pints",       "qrt_ratio":"2"}'),
 ('us_qrt'   ,'{"class":"us", "cnv_to":"["met_ml"], "cnv_ratio":"946.353", "unit_abbr":"qrt"    , "unit_single":"quart"      ,"unit_plural":"quarts",      "gal_ratio":"4", "hg_ratio":"2"}'),
-('us_hgal'  ,'{"class":"us", "cnv_to":"["met_ml"], "cnv_ratio":"1892.71", "unit_abbr":"hgal"   , "unit_single":"half gallon","unit_plural":"half gallons","gal_ratio":"2"}')
+('us_hgal'  ,'{"class":"us", "cnv_to":"["met_ml"], "cnv_ratio":"1892.71", "unit_abbr":"hgal"   , "unit_single":"half gallon","unit_plural":"half gallons","gal_ratio":"2"}'),
 ('us_gal'   ,'{"class":"us", "cnv_to":"["met_l"],  "cnv_ratio":"3.78541", "unit_abbr":"gal"    , "unit_single":"gallon"     ,"unit_plural":"gallons"}'),
 --TODO add conversion_ratio & conversion_unit
 ('met_mg','{"class":"met", "cnv_to":["us_oz"],                                                                                "cnv_ratio":".035274", "unit_abbr":"mg","unit_single":"milligram" ,"unit_plural":"milligrams" "g_ratio":"1000"}'),
