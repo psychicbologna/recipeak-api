@@ -1,6 +1,6 @@
 const AuthService = require('../auth/auth-service');
 
-function requireAuth(req, res, next) {
+async function requireAuth(req, res, next) {
   const authToken = req.get('Authorization') || '';
 
   let bearerToken;
@@ -10,27 +10,30 @@ function requireAuth(req, res, next) {
     bearerToken = authToken.slice(7, authToken.length);
   }
 
-  try {
-    const payload = AuthService.verifyJwt(bearerToken);
+  const payload = AuthService.verifyJwt(bearerToken);
 
-    AuthService.getUserWithUserName(
+  console.log(payload.sub)
+
+  try {
+    const user = await AuthService.getUserWithUsername(
       req.app.get('db'),
       payload.sub,
-    )
-      .then(user => {
-        if (!user)
-          return res.status(401).json({ error: 'Unauthorized request' });
-        req.user = user;
-        next();
-      })
-      .catch(err => {
-        console.error(err);
-        next(err);
-      });
-  } catch (error) {
-    res.status(401).json({ error: `Unauthorized request` });
+    );
+
+    console.log('user: ', user);
+
+    if (!user) {
+      return res.status(401).json({ error: 'Unauthorized request' });
+    }
+
+    req.user = user;
+    next();
+  }
+  catch (error) {
+    return res.status(401).json({ error: 'Unauthorized request' });
   }
 }
+
 
 module.exports = {
   requireAuth,

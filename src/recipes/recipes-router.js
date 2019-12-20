@@ -54,7 +54,7 @@ recipesRouter
 recipesRouter
   .route('/:recipe_id')
   .all(checkRecipeExists)
-  .get(async (req, res, next) => {
+  .get(requireAuth, async (req, res, next) => {
 
     //Retrieve recipe data
     const recipe = await RecipesService.getById(

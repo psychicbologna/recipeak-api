@@ -48,27 +48,55 @@ const IngredientsService = {
     return db
       .from('units')
       .select('unit_data')
-      .where('unit_set', unit_set);
+      .where('unit_set', unit_set)
+      .first();
   },
 
+  // async getUnitConvertData(db, unit_set) {
+  //   const setData = await this.getUnitSetData(db, unit_set)
+
+
+  // }
+
   serializeGetRecipeIngredient(db, ingredient) {
-    const returndata = {
+    const returnData = {
       id: ingredient.id,
       recipe_id: ingredient.recipe_id,
-      amount: ingredient.amt,
+      amount: parseInt(ingredient.amt),
       unit_set: ingredient.unit_set,
       ing_text: xss(ingredient.ing_text),
     };
-    //The async bit: If the ingredient is using custom unit data, retrieve that data instead of the set.
     if (!ingredient.unit_set) {
-      returndata.unit_data = ingredient.unit_data;
-      return returndata;
+      returnData.unit_data = ingredient.unit_data;
+      return returnData;
     } else {
+      //Retrieve unit set data and attach to ingredient.
       return this.getUnitSetData(db, ingredient.unit_set)
-        .then(ud => {
-          returndata.unit_data = ud[0].unit_data;
-          return returndata;
+        .then(setData => {
+          returnData.unit_data = setData.unit_data;
+          //Check if unit is convertible
+          if (returnData.unit_data.cnv_to === undefined) {
+            return returnData;
+          } else {
+            //Retrieve conversion set data and attach to ingredient.
+            return this.getUnitSetData(db, returnData.unit_data.cnv_to)
+              .then(setData => {
+                const convertData = setData.unit_data;
+                //Set conversion object
+                const conversion = {
+                  amount: returnData.amount * parseInt(returnData.unit_data.cnv_ratio),
+                  class: convertData.class,
+                  unit_plural: convertData.unit_plural,
+                  unit_single: convertData.unit_single
+                };
+                console.log(`Conversion data for ${returnData.unit_data.unit_plural}, end and send: `, conversion);
+                return returnData;
+              });
+          }
         });
+      // .then(returndata => {
+      //   return this.get
+      // })
     }
 
   },
