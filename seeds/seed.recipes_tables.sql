@@ -84,7 +84,7 @@ INSERT INTO
 ('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', 12, 'oz', 'store-bought pizza dough'),
 ('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', 5, 'tbsp', 'extra - virgin olive oil, divided'),
 ('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', 8, 'oz', 'sweet Italian sausage, casings removed'),
-('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', 1, 'none', 'Kosher salt'),
+('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', 0, 'none', 'Kosher salt'),
 ('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', 1, 'thdcup', 'prepared marinara'),
 ('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', 3, 'qtcup', 'coarsely grated low-moisture mozzarella'),
 ('38f716f2-bf5c-4ce7-baab-d52cdc47de5b', .5, 'x', 'small fennel bulb, very thinly sliced'),

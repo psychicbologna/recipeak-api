@@ -49,7 +49,7 @@ recipesRouter
           return res.status(201);
         });
       });
-  })
+  });
 
 recipesRouter
   .route('/:recipe_id')
@@ -91,31 +91,37 @@ recipesRouter
     res.status(200).json(payload);
   })
   //Amend a recipe. TODO change id to param.
-  .patch(requireAuth, jsonBodyParser, (req, res, next) => {
-    const { user_id, name, author, instructions, prep_time, servings, ingredients } = req.body;
+  .patch(requireAuth, jsonBodyParser, async (req, res, next) => {
+    const { user_id, name, author, instructions, prep_time, servings, ingredientsLists } = req.body;
     const newRecipe = { user_id, name, author, instructions, prep_time, servings };
-    const newIngredients = ingredients;
 
+    const deletedIngredients = ingredientsLists.deletedIngredients; //List of ingredients to delete
+    const newIngredients = ingredientsLists.newIngredients; //List of ingredients to add
+    const editedIngredients = ingredientsLists.editedIngredients; //List of ingredients to edit
+
+    //Amend recipe
     RecipesService.patchRecipe(RecipesService.serializeRecipe(newRecipe))
+      //Amend a recipe's ingredients.
       .then(() => {
-        //Amend a recipe's ingredients.
-        newIngredients.map(IngredientsService.serializePostRecipeIngredient);
-      });
-  });
-
-//TODO patches
-recipesRouter.route('./ingredients/:ingredient_id')
-  .all(requireAuth)
-  .all(checkRecipeExists)
-  .patch((req, res, next) => {
-    RecipesService.getById(
-      req.app.get('db'),
-      req.params.recipe_id,
-      req.params.ingredient_id,
-    );
+        newIngredients.map(ingredient => IngredientsService.insertIngredient(IngredientsService.serializePostRecipeIngredient(ingredient)));
+      })
+      //Delete ingredients.
+      .then(() => {
+        deletedIngredients.map(ingredient => IngredientsService.deleteIngredient(ingredient.id));
+      })
+      //Update edited ingredients.
+      .then(() => {
+        editedIngredients.map(ingredient => IngredientsService.updateIngredient(IngredientsService.serializePostRecipeIngredient(ingredient)));
+      })
+      .then(() => res.status(204).end())
+      .catch(next);
   })
-  .delete((req, res, next) => {
-
+  //Ingredients cascade delete on recipe delete.
+  .delete(requireAuth, (req, res, next) => {
+    RecipesService.deleteRecipe((req.app.get('db')), req.params.recipe_id)
+      .then(() => {
+        res.status(200).json('Success');
+      }).catch(next);
   });
 
 /* async/await syntax for promises */

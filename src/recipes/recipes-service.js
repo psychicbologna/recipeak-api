@@ -1,7 +1,6 @@
 const xss = require('xss');
 const parse = require('postgres-interval');
 
-
 const RecipesService = {
   //TODO: Make auth only
   getAllRecipes(db) {

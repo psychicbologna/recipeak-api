@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS units (
 
 CREATE TABLE IF NOT EXISTS ingredients (
   id uuid DEFAULT uuid_generate_v4() UNIQUE,
+  order INTEGER
   recipe_id uuid REFERENCES recipes(id) ON DELETE CASCADE,
   amt FLOAT,
   unit_set TEXT REFERENCES units(unit_set) DEFAULT 'none',

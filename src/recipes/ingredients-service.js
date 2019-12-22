@@ -1,5 +1,6 @@
 const xss = require('xss');
 const parse = require('postgres-interval');
+const UnitsService = require('../units/units-service');
 
 const IngredientsService = {
 
@@ -44,34 +45,20 @@ const IngredientsService = {
       .update(newIngredientFields);
   },
 
-  getUnitSetData(db, unit_set) {
-    return db
-      .from('units')
-      .select('unit_data')
-      .where('unit_set', unit_set)
-      .first();
-  },
-
-  // async getUnitConvertData(db, unit_set) {
-  //   const setData = await this.getUnitSetData(db, unit_set)
-
-
-  // }
-
   serializeGetRecipeIngredient(db, ingredient) {
     const returnData = {
       id: ingredient.id,
       recipe_id: ingredient.recipe_id,
-      amount: parseInt(ingredient.amt),
+      amount: ingredient.amt,
       unit_set: ingredient.unit_set,
       ing_text: xss(ingredient.ing_text),
     };
-    if (!ingredient.unit_set) {
+    if (ingredient.unit_set === 'custom') {
       returnData.unit_data = ingredient.unit_data;
       return returnData;
     } else {
       //Retrieve unit set data and attach to ingredient.
-      return this.getUnitSetData(db, ingredient.unit_set)
+      return UnitsService.getUnitSetData(db, ingredient.unit_set)
         .then(setData => {
           returnData.unit_data = setData.unit_data;
           //Check if unit is convertible
@@ -79,26 +66,26 @@ const IngredientsService = {
             return returnData;
           } else {
             //Retrieve conversion set data and attach to ingredient.
-            return this.getUnitSetData(db, returnData.unit_data.cnv_to)
+            return UnitsService.getUnitSetData(db, returnData.unit_data.cnv_to)
               .then(setData => {
                 const convertData = setData.unit_data;
                 //Set conversion object
                 const conversion = {
-                  amount: returnData.amount * parseInt(returnData.unit_data.cnv_ratio),
+                  amount: (returnData.amount * returnData.unit_data.cnv_ratio).toFixed(3), //Round to 3 decimal places.
                   class: convertData.class,
+                  unit_abbr: convertData.unit_abbr,
                   unit_plural: convertData.unit_plural,
                   unit_single: convertData.unit_single
                 };
-                console.log(`Conversion data for ${returnData.unit_data.unit_plural}, end and send: `, conversion);
+
+                //Attach conversion to ingredient
+                returnData.conversion = conversion;
+                delete [returnData.unit_data.cnv_to, returnData.unit_data.cnv_ratio];
                 return returnData;
               });
           }
         });
-      // .then(returndata => {
-      //   return this.get
-      // })
     }
-
   },
 
   serializePostRecipeIngredient(ingredient, recipe_id) {
