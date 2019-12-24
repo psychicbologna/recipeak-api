@@ -1,6 +1,7 @@
 const xss = require('xss');
 const parse = require('postgres-interval');
 const UnitsService = require('../units/units-service');
+const helpers = require('../helpers/helpers');
 
 const IngredientsService = {
 
@@ -68,16 +69,10 @@ const IngredientsService = {
             //Retrieve conversion set data and attach to ingredient.
             return UnitsService.getUnitSetData(db, returnData.unit_data.cnv_to)
               .then(setData => {
+                
                 const convertData = setData.unit_data;
                 //Set conversion object
-                const conversion = {
-                  amount: (returnData.amount * returnData.unit_data.cnv_ratio).toFixed(3), //Round to 3 decimal places.
-                  class: convertData.class,
-                  unit_abbr: convertData.unit_abbr,
-                  unit_plural: convertData.unit_plural,
-                  unit_single: convertData.unit_single
-                };
-
+                const conversion = helpers.createConversion(returnData.amount, returnData.unit_data.cnv_ratio, convertData);
                 //Attach conversion to ingredient
                 returnData.conversion = conversion;
                 delete [returnData.unit_data.cnv_to, returnData.unit_data.cnv_ratio];

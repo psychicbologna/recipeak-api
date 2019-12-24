@@ -45,7 +45,7 @@ VALUES
     '4a8d066b-9b5a-425a-9ef3-f04f364d3460',
     'Tortilla Soup',
     'Lindsay Ostrom',
-    'Place all soup ingredients in the Instant Pot. Cook on high pressure for 3 minutes. Quick release steam. Tortilla Strips: Cut the tortillas into small strips. Heat the oil in a heavy pan over medium high heat. Working in batches, add tortilla strips and fry in the hot oil for a few minutes until golden and crispy. Remove with tongs, drain on paper towels, and sprinkle with salt. Serve: Stir about half of your tortilla strips into the soup and reserve the remaining half for topping. Top individual bowls with… well… everything! I highly recommend avocado, and definitely don''t forget the lime.',
+    'Place all soup ingredients in the Instant Pot. Cook on high pressure for 3 minutes. Quick release steam. Tortilla Strips: Cut the tortillas into small strips. Heat the oil in a heavy pan over medium high heat. Working in batches, add tortilla strips and fry in the hot oil for a few minutes until golden and crispy. Remove with tongs, drain on paper towels, and sprinkle with salt. Serve: Stir about half of your tortilla strips into the soup and reserve the remaining half for topping. Top individual bowls with, well, everything! I highly recommend avocado, and definitely don''t forget the lime.',
     0,
     15,
     5,

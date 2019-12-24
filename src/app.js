@@ -9,7 +9,8 @@ const express = require('express'),
 const recipesRouter = require('./recipes/recipes-router'),
   authRouter = require('./auth/auth-router'),
   usersRouter = require('./users/users-router'),
-  unitsRouter = require('./units/units-router');
+  unitsRouter = require('./units/units-router'),
+  convertRouter = require('./convert/convert-router');
 const app = express();
 
 const morganOption = (NODE_ENV === 'production');
@@ -22,6 +23,7 @@ app.use('/api/recipes', recipesRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/units', unitsRouter);
+app.use('/api/convert', convertRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;

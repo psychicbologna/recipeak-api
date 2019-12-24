@@ -9,7 +9,7 @@ const UnitsService = {
     return db
       .from('units')
       .select('unit_data')
-      .where('unit_set', unit_set)
+      .where({ unit_set })
       .first();
   },
 
