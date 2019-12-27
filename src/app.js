@@ -1,9 +1,9 @@
 require('dotenv').config();
-const express = require('express'),
-  morgan = require('morgan'),
-  cors = require('cors'),
-  helmet = require('helmet'),
-  { NODE_ENV } = require('./config');
+const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
+const helmet = require('helmet');
+const { NODE_ENV } = require('./config');
 
 //Routers
 const recipesRouter = require('./recipes/recipes-router'),
@@ -14,11 +14,12 @@ const recipesRouter = require('./recipes/recipes-router'),
 
 const app = express();
 
-// const morganOption = NODE_ENV === 'production' ? 'tiny' : 'common';
+console.log(NODE_ENV);
+const morganOption = NODE_ENV === 'production' ? 'tiny' : 'common';
 
-app.use(morgan('tiny'));
+app.use(morgan(morganOption));
 app.use(helmet());
-// app.use(cors()); //TODO client origin
+app.use(cors()); //TODO client origin
 
 app.get('/', (req, res) => {
   res.send('We are go!');
