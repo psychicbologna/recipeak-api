@@ -1,7 +1,7 @@
 const helpers = {
   //Contains the preset conversion data for a defined ingredient.
   createConversion(amount, ratio, convertData) {
-    console.log(amount, ratio=1, convertData);
+    console.log(amount, ratio, convertData);
     return {
       amount: (amount * parseFloat(ratio).toFixed(3)), //Round to 3 decimal places.
       class: convertData.class,
