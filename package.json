@@ -21,7 +21,8 @@
   },
   "keywords": [],
   "engines": {
-    "node": "12.8.0"
+    "node": "12.8.0",
+    "npm": "6.10.2"
   },
   "author": "Alex Fukui <alexander.fukui@gmail.com>",
   "license": "ISC",
