@@ -13,11 +13,15 @@ const recipesRouter = require('./recipes/recipes-router'),
   convertRouter = require('./convert/convert-router');
 const app = express();
 
-const morganOption = (NODE_ENV === 'production');
+const morganOption = (process.env.NODE_ENV === 'production');
 
 app.use(morgan(morganOption));
 app.use(helmet());
-app.use(cors());
+app.use(cors()); //TODO client origin
+
+app.get('/', (req, res) => {
+  res.send('We are go!');
+});
 
 app.use('/api/recipes', recipesRouter);
 app.use('/api/auth', authRouter);
@@ -28,10 +32,8 @@ app.use('/api/convert', convertRouter);
 app.use(function errorHandler(error, req, res, next) {
   let response;
   if (NODE_ENV === 'production') {
-    //basic error on production
     response = { error: { message: 'server error' } };
   } else {
-    //more complex error for development
     console.error(error);
     response = { message: error.message, error };
   }
