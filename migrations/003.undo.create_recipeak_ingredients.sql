@@ -1,7 +1,8 @@
 BEGIN;
 
 DROP TABLE IF EXISTS
+  ingredients,
   units,
-  ingredients;
+  unit_class,
 
 COMMIT;

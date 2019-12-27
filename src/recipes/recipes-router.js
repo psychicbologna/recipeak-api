@@ -19,7 +19,7 @@ recipesRouter
   .route('/')
   //Post a new recipe.
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    const { user_id, name, author, instructions, prep_time, servings, ingredients } = req.body;
+    const { user_id, name, author, instructions, prep_time, servings, ingredientsAddList } = req.body;
     const newRecipe = { user_id, name, author, instructions };
 
     for (const [key, value] of Object.entries(newRecipe)) {
@@ -27,7 +27,7 @@ recipesRouter
         return res.status(400).json({
           error: `Missing ${key} in request body.`
         });
-      } else if (!ingredients.length) {
+      } else if (!ingredientsAddList.length) {
         return res.status(400).json({
           error: 'Missing ingredients. Please enter at least one ingredient.'
         });
