@@ -1,7 +1,7 @@
 const express = require('express'),
   UnitsService = require('./units-service');
 
-const unitsRouter = express.Router();
+const unitsRouter = express.Router()
 
 unitsRouter
   .route('/')
