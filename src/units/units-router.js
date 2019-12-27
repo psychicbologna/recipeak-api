@@ -23,12 +23,10 @@ unitsRouter
     const { unit_set } = req.params;
     UnitsService.getUnitSetData(req.app.get('db'), unit_set)
       .then(unitData => {
-        const unit_plural = unitData.unit_data.unit_plural;
-        const unit_single = unitData.unit_data.unit_single;
-        console.log(unitData);
-        console.log(unit_plural);
-        console.log(unit_single);
-        res.json({ class: unitData.unit_data.class, unit_plural, unit_single});
+        const unit_plural = unitData.unit_data.unit_plural,
+          unit_single = unitData.unit_data.unit_single,
+          unit_class = unitData.unit_data.class;
+        res.json({ class: unit_class, unit_plural, unit_single });
       })
       .catch(next);
   });

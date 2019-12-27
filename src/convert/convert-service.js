@@ -10,7 +10,7 @@ const ConvertService = {
   */
 
   createConversion(db, amount, unit_set) {
-    UnitsService.getUnitSetData(db, unit_set)
+    return UnitsService.getUnitSetData(db, unit_set)
       .then(setData => {
         //Pull unit data from response.
         const unit_data = setData.unit_data;
@@ -24,7 +24,6 @@ const ConvertService = {
               const convertData = setData.unit_data;
               //Set conversion object
               const conversion = helpers.createConversion(amount, unit_data.cnv_ratio, convertData);
-              console.log(conversion);
               return conversion;
             });
         }
