@@ -12,9 +12,9 @@ const recipesRouter = require('./recipes/recipes-router'),
   unitsRouter = require('./units/units-router'),
   convertRouter = require('./convert/convert-router');
 
-const app = express()
+const app = express();
 
-const morganOption = process.env.NODE_ENV === 'production' ? 'tiny' : 'common';
+const morganOption = NODE_ENV === 'production' ? 'tiny' : 'common';
 
 app.use(morgan(morganOption));
 app.use(helmet());
