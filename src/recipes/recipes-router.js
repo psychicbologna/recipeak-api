@@ -3,7 +3,7 @@ const express = require('express'),
   IngredientsService = require('./ingredients-service'),
   { requireAuth } = require('../middleware/jwt-auth');
 
-const path = require('path');
+// const path = require('path');
 const recipesRouter = express.Router();
 const jsonBodyParser = express.json();
 
