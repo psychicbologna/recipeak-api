@@ -18,7 +18,7 @@ const morganOption = process.env.NODE_ENV === 'production' ? 'tiny' : 'common';
 
 app.use(morgan(morganOption));
 app.use(helmet());
-app.use(cors()); //TODO client origin
+// app.use(cors()); //TODO client origin
 
 app.get('/', (req, res) => {
   res.send('We are go!');
