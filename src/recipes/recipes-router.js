@@ -13,13 +13,11 @@ recipesRouter
     RecipesService.getAllRecipes(req.app.get('db'))
       .then(recipes => { res.json(recipes.map(RecipesService.serializeRecipe)); })
       .catch(next);
-  });
-
-recipesRouter
-  .route('/')
-  //Post a new recipe.
+  })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    const { user_id, name, author, instructions, prep_time, servings, ingredientsAddList } = req.body;
+    const user_id = req.user.id;
+    const { name, author, prep_time_hours, prep_time_minutes, servings, instructions, ingredientsAddList } = req.body;
+
     const newRecipe = { user_id, name, author, instructions };
 
     for (const [key, value] of Object.entries(newRecipe)) {
@@ -33,22 +31,28 @@ recipesRouter
         });
       }
     }
-    newRecipe.prep_time = prep_time;
+
+    newRecipe.prep_time_hours = prep_time_hours;
+    newRecipe.prep_time_minutes = prep_time_minutes;
     newRecipe.servings = servings;
 
     RecipesService.insertRecipe(
       req.app.get('db'),
       newRecipe
     )
-      .returning('id')
       .then(id => {
         //Post recipe's ingredients.
-        ingredients.map(ingredient => {
+        ingredientsAddList.map(ingredient => {
           ingredient.recipe_id = id;
-          IngredientsService.insertIngredients(ingredient);
-          return res.status(201);
+          console.log(ingredient);
+          IngredientsService.insertIngredient(req.app.get('db'), ingredient)
+            .then(ing_text => {
+              return console.log(ing_text);
+            });
         });
-      });
+        return res.status(200).json({ id });
+      })
+      .catch(next);
   });
 
 recipesRouter

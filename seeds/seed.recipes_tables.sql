@@ -33,7 +33,7 @@ INSERT INTO
 VALUES
   (
     '38f716f2-bf5c-4ce7-baab-d52cdc47de5b',
-    'Cast Iron Pizza with Fennel and sausage',
+    'Cast Iron Pizza with Fennel and Sausage',
     'Claire Saffitz',
     'Place a rack in top-most position of oven; preheat to 475 degrees. Place dough on a work surface; drizzle with 1 Tbsp. oil, turning to coat. Stretch out to a 10" round and cover loosely with plastic wrap. Heat 1 Tbsp. oil in a large cast-iron skillet over medium. Cook sausage, breaking up into small pieces with a wooden spoon, until browned in spots and cooked though, 5 - 8 minutes. Transfer sausage to a small bowl. Remove skillet from heat and carefully lay dough inside (use spoon to help you extend dough all the way to the edges). Season with salt, then spread marinara over entire surface of dough. Top with mozzarella, then fennel, garlic, and cooked sausage. Drizzle with another 2 Tbsp. oil. Peek underneath the crust - the bottom should be golden brown and crisp from residual heat in the skillet. If it''s not, set over medium-low and cook until crust is golden brown, about 3 minutes. Transfer skillet to oven and bake pizza on top rack until crust is golden brown around the edges and cheese is browned in spots and bubbling all over, 10 - 14 minutes. Let cool 5 minutes, then top with red pepper flakes and basil. Sprinkle with more salt and drizzle with remaining oil.',
     0,
@@ -76,7 +76,7 @@ VALUES
 INSERT INTO
   ingredients (
     recipe_id,
-    amt,
+    amount,
     unit_set,
     ing_text
   )

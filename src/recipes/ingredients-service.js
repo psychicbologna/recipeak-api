@@ -10,7 +10,7 @@ const IngredientsService = {
       .from('ingredients AS ing')
       .select(
         'ing.id',
-        'ing.amt',
+        'ing.amount',
         'ing.unit_set',
         'ing.unit_data',
         'ing.ing_text',
@@ -27,9 +27,10 @@ const IngredientsService = {
   },
 
   insertIngredient(db, ingredient) {
-    return db
-      .into('ingredients')
-      .insert({ ingredient });
+    return db('ingredients')
+      .insert({...ingredient })
+      .returning('ing_text')
+      .then(([ing_text]) => ing_text);
   },
 
   deleteIngredient(db, id) {
@@ -50,7 +51,7 @@ const IngredientsService = {
     const returnData = {
       id: ingredient.id,
       recipe_id: ingredient.recipe_id,
-      amount: ingredient.amt,
+      amount: ingredient.amount,
       unit_set: ingredient.unit_set,
       ing_text: xss(ingredient.ing_text),
     };
@@ -94,7 +95,7 @@ const IngredientsService = {
     return {
       id: ingredient.id,
       recipe_id: recipe_id,
-      amount: ingredient.amt,
+      amount: ingredient.amount,
       unit_set: ingredient.unit_set,
       unit_data: ingredient.unit_data,
       ing_text: xss(ingredient.ing_text),

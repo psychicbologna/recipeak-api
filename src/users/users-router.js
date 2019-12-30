@@ -3,8 +3,7 @@ const path = require('path');
 const usersRouter = express.Router(),
   UsersService = require('./users-service'),
   RecipesService = require('../recipes/recipes-service'),
-  AuthService = require('../auth/auth-service'),
-  { requireAuth } = require('../middleware/jwt-auth');
+  AuthService = require('../auth/auth-service');
 
 const jsonBodyParser = express.json();
 

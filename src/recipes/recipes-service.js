@@ -37,10 +37,11 @@ const RecipesService = {
     return recipe_data;
   },
 
-  insertRecipe(db, id, newRecipe) {
+  insertRecipe(db, newRecipe) {
     return db('recipes')
-      .where({ id })
-      .insert(newRecipe);
+      .insert(newRecipe)
+      .returning('id')
+      .then(([id]) => id);
   },
 
   deleteRecipe(db, id) {

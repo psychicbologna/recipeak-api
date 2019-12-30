@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS units (
 CREATE TABLE IF NOT EXISTS ingredients (
   id uuid DEFAULT uuid_generate_v4() UNIQUE,
   recipe_id uuid REFERENCES recipes(id) ON DELETE CASCADE,
-  amt FLOAT,
+  amount FLOAT,
   unit_set TEXT REFERENCES units(unit_set) DEFAULT 'none',
   unit_data jsonb,
   ing_text TEXT NOT NULL,
