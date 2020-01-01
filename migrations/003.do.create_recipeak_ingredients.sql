@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS ingredients (
   unit_set TEXT REFERENCES units(unit_set) DEFAULT 'none',
   unit_data jsonb,
   ing_text TEXT NOT NULL,
+  date_created TIMESTAMP DEFAULT now() NOT NULL,
   PRIMARY KEY (id, recipe_id)
 );
 

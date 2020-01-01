@@ -51,27 +51,32 @@ const RecipesService = {
       .delete();
   },
 
-  updateRecipe(db, id, newRecipeFields) {
+  updateRecipe(db, newRecipeFields) {
     return db
       .from('recipes')
-      .where({ id })
-      .update(newRecipeFields);
+      .where({ id: newRecipeFields.id })
+      .update({ ...newRecipeFields });
   },
 
-  serializeRecipe(recipe) {
-    // return recipe;
-    return {
+  serializeRecipe(recipe, userId) {
+
+    console.log(userId='');
+
+    const newRecipe = {
       id: recipe.id,
+      user_id: !userId ? recipe.user_id : userId,
       name: xss(recipe.name),
       author: xss(recipe.author),
-      instructions: xss(recipe.instructions),
       prep_time_hours: recipe.prep_time_hours,
       prep_time_minutes: recipe.prep_time_minutes,
-      servings: Number(recipe.servings),
-      date_created: new Date(recipe.date_created),
-      date_modified: new Date(recipe.date_modified) || null,
-      ingredients: recipe.inglist
+      instructions: xss(recipe.instructions),
+      servings: recipe.servings,
+      date_modified: new Date || null,
     };
+
+    console.log('final recipe b4 submission: ', newRecipe);
+
+    return newRecipe;
   },
 };
 

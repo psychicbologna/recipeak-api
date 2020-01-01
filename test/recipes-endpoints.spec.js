@@ -5,7 +5,7 @@ const knex = require('knex'),
   helpers = require('../test/test-helpers'),
   config = require('../config');
 
-describe('Recipes Endpoints', function () {
+describe.only('Recipes Endpoints', function () {
   let db;
   // console.dir(helpers);
 

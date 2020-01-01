@@ -1,8 +1,8 @@
 const knex = require('knex');
-const jwt = require('jsonwebtoken');
 const app = require('../src/app');
-const helpers = require('../test/test-helpers');
-const config = require('../config');
+const jwt = require('jsonwebtoken');
+const helpers = require('./test-helpers');
+const config = require('../src/config');
 
 describe('Auth Endpoints', function () {
   let db;

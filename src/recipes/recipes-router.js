@@ -16,41 +16,49 @@ recipesRouter
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const user_id = req.user.id;
-    const { name, author, prep_time_hours, prep_time_minutes, servings, instructions, ingredientsAddList } = req.body;
+    const { name, author, prep_time_hours, prep_time_minutes, servings, instructions, ingredients } = req.body;
 
-    const newRecipe = { user_id, name, author, instructions };
+    console.log(author);
+    console.log(servings);
+
+    let newRecipe = { name, instructions };
 
     for (const [key, value] of Object.entries(newRecipe)) {
       if (value == null) {
         return res.status(400).json({
           error: `Missing ${key} in request body.`
         });
-      } else if (!ingredientsAddList.length) {
+      } else if (!ingredients.ingredientsAddList.length) {
         return res.status(400).json({
           error: 'Missing ingredients. Please enter at least one ingredient.'
         });
       }
     }
 
-    newRecipe.prep_time_hours = prep_time_hours;
-    newRecipe.prep_time_minutes = prep_time_minutes;
-    newRecipe.servings = servings;
+    newRecipe = {
+      ...newRecipe,
+      author,
+      prep_time_hours,
+      prep_time_minutes,
+      servings
+    };
 
-    RecipesService.insertRecipe(
-      req.app.get('db'),
-      newRecipe
-    )
-      .then(id => {
+    //In a future build, this should use trx to rollback the recipe if the ingredients fail.
+    console.log(user_id);
+    RecipesService.insertRecipe(req.app.get('db'), RecipesService.serializeRecipe(newRecipe, user_id))
+      .then(recipeId => {
         //Post recipe's ingredients.
-        ingredientsAddList.map(ingredient => {
-          ingredient.recipe_id = id;
-          console.log(ingredient);
-          IngredientsService.insertIngredient(req.app.get('db'), ingredient)
-            .then(ing_text => {
-              return console.log(ing_text);
-            });
+        const ingredientsEntered = ingredients.ingredientsAddList.map(async ingredient => {
+          await IngredientsService.insertIngredient(req.app.get('db'), IngredientsService.serializePostRecipeIngredient(ingredient, recipeId));
         });
-        return res.status(200).json({ id });
+        if (!ingredientsEntered) {
+          return res.status(400).json({
+            error: 'Issue posting ingredients.'
+          });
+        }
+        const payload = recipeId;
+
+        return res.status(200).json(payload);
       })
       .catch(next);
   });
@@ -59,7 +67,7 @@ recipesRouter
   .route('/:recipe_id')
   .all(checkRecipeExists)
   .get(requireAuth, async (req, res, next) => {
-
+    const user_id = req.user.id;
     //Retrieve recipe data
     const recipe = await RecipesService.getById(
       req.app.get('db'),
@@ -88,36 +96,43 @@ recipesRouter
 
     //Prepare payload
     const payload = {
-      recipe: RecipesService.serializeRecipe(recipe),
+      recipe: RecipesService.serializeRecipe(recipe, user_id),
       ingredients: ingredients
     };
 
     res.status(200).json(payload);
   })
   //Amend a recipe. TODO change id to param.
-  .patch(requireAuth, jsonBodyParser, async (req, res, next) => {
-    const { user_id, name, author, instructions, prep_time, servings, ingredientsLists } = req.body;
-    const newRecipe = { user_id, name, author, instructions, prep_time, servings };
+  .patch(requireAuth, jsonBodyParser, (req, res, next) => {
+    const user_id = req.user.id;
+    const { id, name, author, prep_time_hours, prep_time_minutes, servings, instructions, ingredients } = req.body;
+    const newRecipe = { id, user_id, name, author, instructions, prep_time_hours, prep_time_minutes, servings };
 
-    const deletedIngredients = ingredientsLists.deletedIngredients; //List of ingredients to delete
-    const newIngredients = ingredientsLists.newIngredients; //List of ingredients to add
-    const editedIngredients = ingredientsLists.editedIngredients; //List of ingredients to edit
+    const toAdd = ingredients.ingredientsAddList; //List of ingredients to add
+    const toDelete = ingredients.ingredientsDeleteList; //List of ingredients to delete
+    const toUpdate = ingredients.ingredientsEditList; //List of ingredients to edit
 
     //Amend recipe
-    RecipesService.patchRecipe(RecipesService.serializeRecipe(newRecipe))
-      //Amend a recipe's ingredients.
-      .then(() => {
-        newIngredients.map(ingredient => IngredientsService.insertIngredient(IngredientsService.serializePostRecipeIngredient(ingredient)));
+    const recipePatched = RecipesService.updateRecipe(req.app.get('db'), RecipesService.serializeRecipe(newRecipe, user_id))
+      .then(async () => {
+
+        //Amend a recipe's ingredients.
+        const added = await toAdd.map(ingredient => IngredientsService.insertIngredient(req.app.get('db'), IngredientsService.serializePostRecipeIngredient(ingredient)));
+        //Delete ingredients.
+        const deleted = await toDelete.map(ingredientId => IngredientsService.deleteIngredient(req.app.get('db'), ingredientId));
+        //Update edited ingredients.
+        const edited = await toUpdate.map(ingredient => IngredientsService.updateIngredient(req.app.get('db'), IngredientsService.serializeUpdateRecipeIngredient(ingredient)));
+
+        if (!added || !deleted || !edited) {
+          res.status(400).json({
+            error: `There was a problem updating ingredients.`
+          });
+        }
+
+        const payload = recipePatched.id;
+
+        return res.status(200).json(payload)
       })
-      //Delete ingredients.
-      .then(() => {
-        deletedIngredients.map(ingredient => IngredientsService.deleteIngredient(ingredient.id));
-      })
-      //Update edited ingredients.
-      .then(() => {
-        editedIngredients.map(ingredient => IngredientsService.updateIngredient(IngredientsService.serializePostRecipeIngredient(ingredient)));
-      })
-      .then(() => res.status(204).end())
       .catch(next);
   })
   //Ingredients cascade delete on recipe delete.

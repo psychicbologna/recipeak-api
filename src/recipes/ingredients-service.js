@@ -15,7 +15,8 @@ const IngredientsService = {
         'ing.unit_data',
         'ing.ing_text',
       )
-      .where('ing.recipe_id', recipe_id);
+      .where('ing.recipe_id', recipe_id)
+      .orderBy('ing.date_created');
   },
 
   getById(db, id) {
@@ -28,23 +29,25 @@ const IngredientsService = {
 
   insertIngredient(db, ingredient) {
     return db('ingredients')
-      .insert({...ingredient })
-      .returning('ing_text')
-      .then(([ing_text]) => ing_text);
+      .insert(ingredient);
   },
 
   deleteIngredient(db, id) {
     return db
       .from('ingredients')
       .where({ id })
-      .delete();
+      .delete()
+      .returning('id')
+      .then(([id]) => id);
   },
 
-  updateIngredient(db, id, newIngredientFields) {
+  updateIngredient(db, newIngredientFields) {
     return db
       .from('ingredients')
-      .where({ id })
-      .update(newIngredientFields);
+      .where({ id: newIngredientFields.id })
+      .update(newIngredientFields)
+      .returning('id')
+      .then(([id]) => id);
   },
 
   serializeGetRecipeIngredient(db, ingredient) {
@@ -73,14 +76,6 @@ const IngredientsService = {
                 const convertData = setData.unit_data;
                 //Set conversion object
                 const conversion = helpers.createConversion(returnData.amount, returnData.unit_data.cnv_ratio, convertData);
-                // {
-                //   amount: (returnData.amount * returnData.unit_data.cnv_ratio).toFixed(3), //Round to 3 decimal places.
-                //   class: convertData.class,
-                //   unit_abbr: convertData.unit_abbr,
-                //   unit_plural: convertData.unit_plural,
-                //   unit_single: convertData.unit_single
-                // };
-
                 //Attach conversion to ingredient
                 returnData.conversion = conversion;
                 delete [returnData.unit_data.cnv_to, returnData.unit_data.cnv_ratio];
@@ -91,16 +86,29 @@ const IngredientsService = {
     }
   },
 
-  serializePostRecipeIngredient(ingredient, recipe_id) {
-    return {
-      id: ingredient.id,
-      recipe_id: recipe_id,
+  serializePostRecipeIngredient(ingredient, recipeId) {
+    const newIngredient = {
+      recipe_id: recipeId,
       amount: ingredient.amount,
       unit_set: ingredient.unit_set,
-      unit_data: ingredient.unit_data,
       ing_text: xss(ingredient.ing_text),
     };
+    if (ingredient.unit_set === 'custom') { newIngredient.unit_data = ingredient.unit_data; }
+    return newIngredient;
+  },
+
+  serializeUpdateRecipeIngredient(ingredient, recipeId) {
+    const newIngredient = {
+      id: ingredient.id,
+      recipe_id: recipeId,
+      amount: ingredient.amount,
+      unit_set: ingredient.unit_set,
+      ing_text: xss(ingredient.ing_text),
+    };
+    if (ingredient.unit_set === 'custom') { newIngredient.unit_data = ingredient.unit_data; }
+    return newIngredient;
   }
+
 };
 
 module.exports = IngredientsService;
