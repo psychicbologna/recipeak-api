@@ -7,11 +7,20 @@ const unitsRouter = express.Router()
 unitsRouter
   .route('/')
   .get((req, res, next) => {
-    UnitsService.getUnits(req.app.get('db'))
+    return UnitsService.getUnits(req.app.get('db'))
       .then(units => {
+        if (!units.length)
+          return res.status(404).json({
+            error: `Sorry, the units don't exist`
+          });
         //Sorts units into groups by class before deploying.
-        const sortedUnits = UnitsService.unitsSorter(units);
-        res.json(sortedUnits);
+        try {
+          const sortedUnits = UnitsService.unitsSorter(units);
+          console.log(sortedUnits);
+          return res.json(sortedUnits);
+        } catch (error) {
+          next(error);
+        }
       })
       .catch(next);
   });
@@ -23,6 +32,12 @@ unitsRouter
     const { unit_set } = req.params;
     UnitsService.getUnitSetData(req.app.get('db'), unit_set)
       .then(unitData => {
+
+        if (!unitData)
+          return res.status(404).json({
+            error: `Sorry, that unit doesn't exist`
+          });
+
         const unit_plural = unitData.unit_data.unit_plural,
           unit_single = unitData.unit_data.unit_single,
           unit_class = unitData.unit_data.class;

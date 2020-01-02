@@ -1,8 +1,5 @@
 const knex = require('knex'),
   app = require('../src/app'),
-  jwt = require('jsonwebtoken'),
-  bcrypt = require('bcryptjs'),
-  AuthService = require('../src/auth/auth-service'),
   helpers = require('./test-helpers'),
   config = require('../src/config');
 
@@ -109,7 +106,7 @@ describe('Recipes Endpoints', function () {
   describe('GET /recipes/:recipeid', () => {
 
     context(`Recipe doesn't exist`, () => {
-      it(`responds with 404, 'Sorry, that recipe doesn't exist' when recipe id doesn't exist.`, () => {
+      it(`responds with 404, 'Sorry, that recipe doesn't exist'`, () => {
         return supertest(app)
           .get(`/api/recipes/${testRecipes[0].id}`)
           .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
@@ -148,7 +145,7 @@ describe('Recipes Endpoints', function () {
 
   describe('PATCH /recipes/:recipeid', () => {
     context(`Recipe doesn't exist`, () => {
-      it(`responds with 404, 'Sorry, that recipe doesn't exist' when recipe id doesn't exist.`, () => {
+      it(`responds with 404, 'Sorry, that recipe doesn't exist'`, () => {
         return supertest(app)
           .patch(`/api/recipes/${testRecipes[0].id}`)
           .expect(404, { error: 'Sorry, that recipe doesn\'t exist.' });
@@ -159,7 +156,7 @@ describe('Recipes Endpoints', function () {
 
   describe('DELETE /recipes/:recipeid', () => {
     context(`Recipe doesn't exist`, () => {
-      it(`responds with 404, 'Sorry, that recipe doesn't exist' when recipe id doesn't exist.`, () => {
+      it(`responds with 404, 'Sorry, that recipe doesn't exist'`, () => {
         return supertest(app)
           .patch(`/api/recipes/${testRecipes[0].id}`)
           .expect(404, { error: 'Sorry, that recipe doesn\'t exist.' });

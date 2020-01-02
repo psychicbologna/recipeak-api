@@ -38,17 +38,17 @@ function makeUnitsArray() {
     {
       id: 1,
       unit_set: 'test-1',
-      unit_data: '{"unit_single":"t1", "unit_plural":"t1s"}'
+      unit_data: '{"unit_class":"test-class-1", "unit_single":"t1", "unit_plural":"t1s"}'
     },
     {
       id: 2,
       unit_set: 'test-2',
-      unit_data: '{"unit_single":"t2", "unit_plural":"t2s"}'
+      unit_data: '{"unit_class":"test-class-2", "unit_single":"t2", "unit_plural":"t2s"}'
     },
     {
       id: 3,
       unit_set: 'test-3',
-      unit_data: '{"unit_single":"t3", "unit_plural":"t3s"}'
+      unit_data: '{"unit_class":"test-class-3", "unit_single":"t3", "unit_plural":"t3s"}'
     },
   ];
 }

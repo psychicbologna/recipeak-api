@@ -1,6 +1,5 @@
 const knex = require('knex');
 const app = require('../src/app');
-// const jwt = require('jsonwebtoken');
 const helpers = require('./test-helpers');
 const config = require('../src/config');
 
@@ -68,27 +67,5 @@ describe('Auth Endpoints', function () {
       .send(userInvalidPass)
       .expect(400, { error: 'Incorrect username or password' });
   });
-  //TODO implement final testings/code for authorization!
-  // it(`responds 200 and JWT auth token using secret when valid credentials`, () => {
-  //   const userValidCreds = {
-  //     username: testUser.username,
-  //     password: testUser.password,
-  //   };
-  //   const expectedToken = jwt.sign(
-  //     { user_id: testUser.id }, // payload
-  //     config.JWT_SECRET,
-  //     {
-  //       subject: testUser.username,
-  //       expiresIn: config.JWT_EXPIRY,
-  //       algorithm: 'HS256',
-  //     }
-  //   );
-  //   return supertest(app)
-  //     .post('/api/auth/login')
-  //     .send(userValidCreds)
-  //     .expect(200, {
-  //       authToken: expectedToken,
-  //     });
-  // });
 
 });
