@@ -110,7 +110,7 @@ recipesRouter
 
     //Amend recipe
     const recipePatched = RecipesService.updateRecipe(req.app.get('db'), RecipesService.serializeRecipe(newRecipe, user_id))
-      .then(async () => {
+      .then(async recipeId => {
 
         //Amend a recipe's ingredients.
         const added = await toAdd.map(ingredient => IngredientsService.insertIngredient(req.app.get('db'), IngredientsService.serializePostRecipeIngredient(ingredient)));
@@ -120,17 +120,25 @@ recipesRouter
         const edited = await toUpdate.map(ingredient => IngredientsService.updateIngredient(req.app.get('db'), IngredientsService.serializeUpdateRecipeIngredient(ingredient)));
 
         if (!added || !deleted || !edited) {
-          res.status(400).json({
+          return res.status(400).json({
             error: `There was a problem updating ingredients.`
           });
         }
+        return recipeId;
+      })
+      .then(recipeId => {
+        if (!recipePatched) {
+          return res.status(400).json({
+            error: `There was a problem updating the recipe.`
+          });
+        }
+        const payload = recipeId.toString();
+        return res.status(200).json(payload);
 
-        const payload = recipePatched.id;
-
-        return res.status(200).json(payload)
       })
       .catch(next);
   })
+
   //Ingredients cascade delete on recipe delete.
   .delete(requireAuth, (req, res, next) => {
     RecipesService.deleteRecipe((req.app.get('db')), req.params.recipe_id)

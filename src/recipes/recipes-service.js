@@ -1,5 +1,4 @@
 const xss = require('xss');
-const parse = require('postgres-interval');
 
 const RecipesService = {
   //TODO: Make auth only
@@ -55,7 +54,8 @@ const RecipesService = {
     return db
       .from('recipes')
       .where({ id: newRecipeFields.id })
-      .update({ ...newRecipeFields });
+      .update({ ...newRecipeFields })
+      .returning('id');
   },
 
   serializeRecipe(recipe, userId) {

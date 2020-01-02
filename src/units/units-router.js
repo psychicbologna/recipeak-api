@@ -1,7 +1,7 @@
 const express = require('express'),
   UnitsService = require('./units-service');
 
-const unitsRouter = express.Router()
+const unitsRouter = express.Router();
 
 //Retrieves a sorted list of units.
 unitsRouter
@@ -16,7 +16,6 @@ unitsRouter
         //Sorts units into groups by class before deploying.
         try {
           const sortedUnits = UnitsService.unitsSorter(units);
-          console.log(sortedUnits);
           return res.json(sortedUnits);
         } catch (error) {
           next(error);
