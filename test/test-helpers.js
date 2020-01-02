@@ -131,35 +131,25 @@ function makeExpectedRecipe(recipe) {
 
 function makeNewRecipe(testUser, testUnits) {
   return {
-    newRecipe: {
-      id: '',
-      user_id: testUser.id,
-      name: 'Test',
-      author: 'foobar',
-      prep_time_hours: 1,
-      prep_time_minutes: 1,
-      servings: 3,
-      instructions: 'Test do things test do things',
-      ingredients: {
-        ingredientsAddList: [
-          {
-            amount: 3,
-            ing_text: 'Test 1',
-            unit_set: testUnits[0].unit_set
-          }
-        ]
-      }
-    },
-    expectedRecipe: (recipe, id='') => {
-      const expected = {
-        ...this.recipe,
-        // date_created: recipe.date_created.toISOString(),
-      };
 
-      delete expected.ingredients;
-      expected.id = id;
-      return expected;
-    },
+    id: '',
+    user_id: testUser.id,
+    name: 'Test',
+    author: 'foobar',
+    prep_time_hours: 1,
+    prep_time_minutes: 1,
+    servings: 3,
+    instructions: 'Test do things test do things',
+    ingredients: {
+      ingredientsAddList: [
+        {
+          amount: 3,
+          ing_text: 'Test 1',
+          unit_set: testUnits[0].unit_set
+        }
+      ]
+    }
+
   };
 }
 

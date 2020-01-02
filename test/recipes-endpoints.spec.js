@@ -6,7 +6,7 @@ const knex = require('knex'),
   helpers = require('./test-helpers'),
   config = require('../src/config');
 
-describe.only('Recipes Endpoints', function () {
+describe('Recipes Endpoints', function () {
   let db;
 
   const {
@@ -78,13 +78,11 @@ describe.only('Recipes Endpoints', function () {
       });
 
       it('creates a recipe and responds with an id. The recipe may then be retrieved by this id.', () => {
-
-        const { newRecipe, expectedRecipe } = testNewRecipe;
-
+        
         return supertest(app)
           .post('/api/recipes')
           .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-          .send(newRecipe)
+          .send(testNewRecipe)
           .expect(200)
           .then(postRes =>
             supertest(app)
@@ -92,15 +90,15 @@ describe.only('Recipes Endpoints', function () {
               .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
               .expect(getRes => {
                 expect(getRes.body).to.have.property('recipe');
-                expect(getRes.body.recipe.name).to.eql(newRecipe.name);
-                expect(getRes.body.recipe.author).to.eql(newRecipe.author);
-                expect(getRes.body.recipe.prep_time_hours).to.eql(newRecipe.prep_time_hours);
-                expect(getRes.body.recipe.prep_time_minutes).to.eql(newRecipe.prep_time_minutes);
-                expect(getRes.body.recipe.servings).to.eql(newRecipe.servings);
-                expect(getRes.body.recipe.instructions).to.eql(newRecipe.instructions);
-                expect(getRes.body.ingredients[0].amount).to.eql(newRecipe.ingredients.ingredientsAddList[0].amount);
-                expect(getRes.body.ingredients[0].ing_text).to.eql(newRecipe.ingredients.ingredientsAddList[0].ing_text);
-                expect(getRes.body.ingredients[0].unit_set).to.eql(newRecipe.ingredients.ingredientsAddList[0].unit_set);
+                expect(getRes.body.recipe.name).to.eql(testNewRecipe.name);
+                expect(getRes.body.recipe.author).to.eql(testNewRecipe.author);
+                expect(getRes.body.recipe.prep_time_hours).to.eql(testNewRecipe.prep_time_hours);
+                expect(getRes.body.recipe.prep_time_minutes).to.eql(testNewRecipe.prep_time_minutes);
+                expect(getRes.body.recipe.servings).to.eql(testNewRecipe.servings);
+                expect(getRes.body.recipe.instructions).to.eql(testNewRecipe.instructions);
+                expect(getRes.body.ingredients[0].amount).to.eql(testNewRecipe.ingredients.ingredientsAddList[0].amount);
+                expect(getRes.body.ingredients[0].ing_text).to.eql(testNewRecipe.ingredients.ingredientsAddList[0].ing_text);
+                expect(getRes.body.ingredients[0].unit_set).to.eql(testNewRecipe.ingredients.ingredientsAddList[0].unit_set);
               })
           );
       });
@@ -131,9 +129,6 @@ describe.only('Recipes Endpoints', function () {
       });
 
       it(`Responds with a status 200 and the requested recipe's data.`, () => {
-
-        // console.log(testRecipes[0].ingredients);
-        // console.log(testIngredients[0][0]);
 
         return supertest(app)
           .get(`/api/recipes/${testRecipes[0].id}`)
