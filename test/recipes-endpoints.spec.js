@@ -1,22 +1,21 @@
 const knex = require('knex'),
   app = require('../src/app'),
+  jwt = require('jsonwebtoken'),
   bcrypt = require('bcryptjs'),
   AuthService = require('../src/auth/auth-service'),
-  helpers = require('../test/test-helpers'),
-  config = require('../config');
+  helpers = require('./test-helpers'),
+  config = require('../src/config');
 
 describe.only('Recipes Endpoints', function () {
   let db;
-  // console.dir(helpers);
 
   const {
     testUsers,
     testUnits,
-    testNewRecipe,
     testRecipes,
     testIngredients,
+    testNewRecipe
   } = helpers.makeRecipesFixtures();
-
 
   before('make knex instance', () => {
     db = knex({
@@ -55,7 +54,7 @@ describe.only('Recipes Endpoints', function () {
 
     afterEach('cleanup', () => helpers.cleanTables(db));
 
-    it('responds with 200 and all of the public recipes', () => {
+    it('responds with 200 and all of the recipes', () => {
       const expectedRecipes = testRecipes.map(recipe => (
         helpers.makeExpectedRecipe(recipe)
       )
@@ -63,11 +62,10 @@ describe.only('Recipes Endpoints', function () {
       return supertest(app)
         .get('/api/recipes')
         .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-        .where('recipe_public', 'true')
         .expect(200, expectedRecipes);
     });
   });
-  describe(`POST /recipes`, () => {
+  describe('POST /recipes', () => {
     describe('Protected Endpoints', () => {
       beforeEach('insert recipes', () => {
         return helpers.seedRecipesTables(
@@ -79,40 +77,100 @@ describe.only('Recipes Endpoints', function () {
         );
       });
 
-      it('responds with \'401 Missing basic token when no basic token\'.', () => { 
-        return supertest(app)
-          .get('/api/recipes/123')
-          .expect(401, {error: 'Missing bearer token'});
-      });
+      it('creates a recipe and responds with an id. The recipe may then be retrieved by this id.', () => {
 
-      console.log(helpers.makeAuthHeader(testUsers[0]));
+        const { newRecipe, expectedRecipe } = testNewRecipe;
 
-      it('creates a recipe, responding with 201 and the recipe.', () => {
         return supertest(app)
           .post('/api/recipes')
           .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-          .send(testNewRecipe)
-          .expect(201)
-          .expect(res => {
-            expect(res.body).to.have.property('id');
-            expect(res.body.user_id).to.eql(testNewRecipe.user_id);
-            expect(res.body.name).to.eql(testNewRecipe.name);
-            expect(res.body.author).to.eql(testNewRecipe.author);
-            expect(res.body.prep_time).to.eql(testNewRecipe.prep_time);
-            expect(res.body.servings).to.eql(testNewRecipe.servings);
-            expect(res.body.instructions).to.eql(testNewRecipe.instructions);
-            expect(res.body.ingredients).to.eql(testNewRecipe.ingredients);
-          })
+          .send(newRecipe)
+          .expect(200)
           .then(postRes =>
             supertest(app)
-              .get(`/api/recipes/${postRes.body.id}`)
-              .expect(postRes.body)
+              .get(`/api/recipes/${postRes.body}`)
+              .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+              .expect(getRes => {
+                expect(getRes.body).to.have.property('recipe');
+                expect(getRes.body.recipe.name).to.eql(newRecipe.name);
+                expect(getRes.body.recipe.author).to.eql(newRecipe.author);
+                expect(getRes.body.recipe.prep_time_hours).to.eql(newRecipe.prep_time_hours);
+                expect(getRes.body.recipe.prep_time_minutes).to.eql(newRecipe.prep_time_minutes);
+                expect(getRes.body.recipe.servings).to.eql(newRecipe.servings);
+                expect(getRes.body.recipe.instructions).to.eql(newRecipe.instructions);
+                expect(getRes.body.ingredients[0].amount).to.eql(newRecipe.ingredients.ingredientsAddList[0].amount);
+                expect(getRes.body.ingredients[0].ing_text).to.eql(newRecipe.ingredients.ingredientsAddList[0].ing_text);
+                expect(getRes.body.ingredients[0].unit_set).to.eql(newRecipe.ingredients.ingredientsAddList[0].unit_set);
+              })
           );
       });
+
     });
   });
 
+  describe('GET /recipes/:recipeid', () => {
 
+    context(`Recipe doesn't exist`, () => {
+      it(`responds with 404, 'Sorry, that recipe doesn't exist' when recipe id doesn't exist.`, () => {
+        return supertest(app)
+          .get(`/api/recipes/${testRecipes[0].id}`)
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+          .expect(404, { error: 'Sorry, that recipe doesn\'t exist.' });
+      });
+    });
 
+    context('Recipe exists', () => {
+      beforeEach('insert recipes', () => {
+        return helpers.seedRecipesTables(
+          db,
+          testUsers,
+          testUnits,
+          testRecipes,
+          testIngredients
+        );
+      });
+
+      it(`Responds with a status 200 and the requested recipe's data.`, () => {
+
+        // console.log(testRecipes[0].ingredients);
+        // console.log(testIngredients[0][0]);
+
+        return supertest(app)
+          .get(`/api/recipes/${testRecipes[0].id}`)
+          .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+          .expect(200)
+          .expect(getRes => {
+            expect(getRes.body).to.have.keys('recipe', 'ingredients');
+            expect(getRes.body.recipe).to.eql(helpers.makeExpectedRecipe(testRecipes[0]));
+            expect(getRes.body.ingredients[0].amount).to.eql(testIngredients[0][0].amount);
+            expect(getRes.body.ingredients[0].ing_text).to.eql(testIngredients[0][0].ing_text);
+            expect(getRes.body.ingredients[0].unit_set).to.eql(testIngredients[0][0].unit_set);
+          });
+      });
+    });
+
+  });
+
+  describe('PATCH /recipes/:recipeid', () => {
+    context(`Recipe doesn't exist`, () => {
+      it(`responds with 404, 'Sorry, that recipe doesn't exist' when recipe id doesn't exist.`, () => {
+        return supertest(app)
+          .patch(`/api/recipes/${testRecipes[0].id}`)
+          .expect(404, { error: 'Sorry, that recipe doesn\'t exist.' });
+      });
+    });
+
+  });
+
+  describe('DELETE /recipes/:recipeid', () => {
+    context(`Recipe doesn't exist`, () => {
+      it(`responds with 404, 'Sorry, that recipe doesn't exist' when recipe id doesn't exist.`, () => {
+        return supertest(app)
+          .patch(`/api/recipes/${testRecipes[0].id}`)
+          .expect(404, { error: 'Sorry, that recipe doesn\'t exist.' });
+      });
+    });
+
+  });
 
 });

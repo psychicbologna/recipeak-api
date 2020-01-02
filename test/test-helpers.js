@@ -4,32 +4,6 @@ const bcrypt = require('bcryptjs'),
 
 //TODO stage ingredients/units, alter ingredients to take them
 
-function makeNewRecipe(testUsers, testUnits) {
-  return {
-    user_id: testUsers[0].id,
-    name: 'Test',
-    author: 'foobar',
-    prep_time: '1 hour 30 minutes',
-    servings: 3,
-    instructions: 'Test do things test do things',
-    ingredients: [
-      {
-        amount: 3,
-        ing_text: 'Test 1',
-        unit_set: testUnits[0].unit_set
-      },
-      {
-        amount: 3,
-        ing_text: 'Test 2',
-        unit_data: {
-          unit_single: 'test', //TODO make sure each ingredient tests all aspect of ingredient functionality.
-          unit_plural: 'test'
-        }
-      },
-    ]
-  };
-}
-
 function makeUsersArray() {
   return [
     {
@@ -55,14 +29,6 @@ function makeUsersArray() {
       username: 'superpat022',
       password: 'password',
       date_created: new Date('2029-01-22T16:28:32.615Z')
-    },
-    {
-      id: uuid(),
-      first_name: 'Test-4',
-      last_name: 'Test-4',
-      username: 'choppybit',
-      password: 'password',
-      date_created: new Date('2029-01-22T16:28:32.615Z')
     }
   ];
 }
@@ -84,253 +50,140 @@ function makeUnitsArray() {
       unit_set: 'test-3',
       unit_data: '{"unit_single":"t3", "unit_plural":"t3s"}'
     },
-    {
-      id: 4,
-      unit_set: 'test-4',
-      unit_data: '{"unit_single":"t4", "unit_plural":"t4s"}'
-    },
   ];
 }
 
-function makeRecipesArray(users) {
+function makeRecipesArray(testUser) {
+  console.log(testUser.id);
   return [
     {
       id: uuid(),
       name: 'Mary Recipe 1',
       author: 'Mary Fakename',
       instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
-      prep_time: '30 minutes',
+      prep_time_hours: 1,
+      prep_time_minutes: 1,
       servings: 6,
       date_created: new Date('2029-01-22T16:28:32.615Z'),
-      user_id: users[0].id
+      user_id: testUser.id
     },
     {
       id: uuid(),
       name: 'Mary Recipe 2',
       author: 'Julia Childs',
       instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
-      prep_time: '90 minutes',
+      prep_time_hours: 1,
+      prep_time_minutes: 1,
       servings: 6,
       date_created: new Date('2029-01-22T16:28:32.615Z'),
-      user_id: users[0].id
+      user_id: testUser.id
     },
     {
       id: uuid(),
       name: 'Mary Recipe 3',
       author: 'Phillip Seymour Hoffman',
       instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
-      prep_time: '1 hour 30 minutes',
+      prep_time_hours: 1,
+      prep_time_minutes: 1,
       servings: 6,
       date_created: new Date('2029-01-22T16:28:32.615Z'),
-      user_id: users[0].id
+      user_id: testUser.id
     },
-    {
-      id: uuid(),
-      name: 'Jimmy Recipe 1',
-      author: 'Jimmy Buffet',
-      instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
-      prep_time: '30 minutes',
-      servings: 8,
-      date_created: new Date('2029-01-22T16:28:32.615Z'),
-      user_id: users[1].id
-    },
-    {
-      id: uuid(),
-      name: 'John Recipe 1',
-      author: 'John Denver',
-      instructions: 'Eiusmod ut sint sunt sit aliquip laboris excepteur nostrud ullamco quis ea anim. Ipsum ex et anim eu id velit occaecat non. Ea id nisi culpa veniam esse ut aute culpa nulla commodo deserunt. Amet elit in enim ullamco Lorem adipisicing eiusmod proident fugiat tempor aliqua amet mollit proident. Aute ullamco exercitation quis nisi labore est sint qui nostrud. Veniam velit exercitation aliquip amet excepteur aliquip proident sunt labore ullamco exercitation deserunt voluptate.',
-      prep_time: '30 minutes',
-      servings: 3,
-      date_created: new Date('2029-01-22T16:28:32.615Z'),
-      user_id: users[2].id
-    }
   ];
 }
 
-function makeIngredientsArray(recipes, units) {
+function makeIngredientsArray(recipe, units) {
   return [
     {
-      recipe_id: recipes[0].id,
+      recipe_id: recipe.id,
       amount: 1,
       unit_set: units[0].unit_set,
       ing_text: 'test-ingredient-1',
     },
     {
-      recipe_id: recipes[0].id,
+      recipe_id: recipe.id,
       amount: 1,
       unit_set: units[1].unit_set,
       ing_text: 'test-ingredient-2',
     },
     {
-      recipe_id: recipes[0].id,
+      recipe_id: recipe.id,
       amount: 1,
       unit_set: units[2].unit_set,
       ing_text: 'test-ingredient-3',
-    },
-    {
-      recipe_id: recipes[0].id,
-      amount: 1,
-      unit_set: units[3].unit_set,
-      ing_text: 'test-ingredient-4',
-    },
-    // {
-    //   recipe_id: recipes[0].id,
-    //   amount: 1,
-    //   // unit_set: '',
-    //   unit_data: {
-    //     unit_single: 'custom-unit',
-    //     unit_plural: 'custom-unit'
-    //   },
-    //   ing_test: 'test-ingredient-5',
-    // },
-    // {
-    //   recipe_id: recipes[1].id,
-    //   amount: 1,
-    //   unit_set: units[0].unit_set,
-    //   ing_test: 'test-ingredient-1',
-    // },
-    // {
-    //   recipe_id: recipes[1].id,
-    //   amount: 1,
-    //   unit_set: units[1].unit_set,
-    //   ing_test: 'test-ingredient-2',
-    // },
-    // {
-    //   recipe_id: recipes[1].id,
-    //   amount: 1,
-    //   unit_set: units[2].unit_set,
-    //   ing_test: 'test-ingredient-3',
-    // },
-    // {
-    //   recipe_id: recipes[1].id,
-    //   amount: 1,
-    //   unit_set: units[3].unit_set,
-    //   ing_test: 'test-ingredient-4',
-    // },
-    // {
-    //   recipe_id: recipes[1].id,
-    //   amount: 1,
-    //   // unit_set: '',
-    //   unit_data: {
-    //     unit_single: 'custom-unit',
-    //     unit_plural: 'custom-unit'
-    //   },
-    //   ing_test: 'test-ingredient-5',
-    // },
-    // {
-    //   recipe_id: recipes[2].id,
-    //   amount: 1,
-    //   unit_set: units[0].unit_set,
-    //   ing_test: 'test-ingredient-1',
-    // },
-    // {
-    //   recipe_id: recipes[2].id,
-    //   amount: 1,
-    //   unit_set: units[1].unit_set,
-    //   ing_test: 'test-ingredient-2',
-    // },
-    // {
-    //   recipe_id: recipes[2].id,
-    //   amount: 1,
-    //   unit_set: units[2].unit_set,
-    //   ing_test: 'test-ingredient-3',
-    // },
-    // {
-    //   recipe_id: recipes[2].id,
-    //   amount: 1,
-    //   unit_set: units[3].unit_set,
-    //   ing_test: 'test-ingredient-4',
-    // },
-    // {
-    //   recipe_id: recipes[2].id,
-    //   amount: 1,
-    //   // unit_set: '',
-    //   unit_data: {
-    //     unit_single: 'custom-unit',
-    //     unit_plural: 'custom-unit'
-    //   },
-    //   ing_test: 'test-ingredient-5',
-    // },
-    // {
-    //   recipe_id: recipes[3].id,
-    //   amount: 1,
-    //   unit_set: units[0].unit_set,
-    //   ing_test: 'test-ingredient-1',
-    // },
-    // {
-    //   recipe_id: recipes[3].id,
-    //   amount: 1,
-    //   unit_set: units[1].unit_set,
-    //   ing_test: 'test-ingredient-2',
-    // },
-    // {
-    //   recipe_id: recipes[3].id,
-    //   amount: 1,
-    //   unit_set: units[2].unit_set,
-    //   ing_test: 'test-ingredient-3',
-    // },
-    // {
-    //   recipe_id: recipes[3].id,
-    //   amount: 1,
-    //   unit_set: units[3].unit_set,
-    //   ing_test: 'test-ingredient-4',
-    // },
-    // {
-    //   recipe_id: recipes[3].id,
-    //   amount: 1,
-    //   // unit_set: '',
-    //   unit_data: {
-    //     unit_single: 'custom-unit',
-    //     unit_plural: 'custom-unit'
-    //   },
-    //   ing_test: 'test-ingredient-5',
-    // },
-    // {
-    //   recipe_id: recipes[4].id,
-    //   amount: 1,
-    //   unit_set: units[0].unit_set,
-    //   ing_test: 'test-ingredient-1',
-    // },
-    // {
-    //   recipe_id: recipes[4].id,
-    //   amount: 1,
-    //   unit_set: units[1].unit_set,
-    //   ing_test: 'test-ingredient-2',
-    // },
-    // {
-    //   recipe_id: recipes[4].id,
-    //   amount: 1,
-    //   unit_set: units[2].unit_set,
-    //   ing_test: 'test-ingredient-3',
-    // },
-    // {
-    //   recipe_id: recipes[4].id,
-    //   amount: 1,
-    //   unit_set: units[3].unit_set,
-    //   ing_test: 'test-ingredient-4',
-    // },
-    // {
-    //   recipe_id: recipes[4].id,
-    //   amount: 1,
-    //   // unit_set: '',
-    //   unit_data: {
-    //     unit_single: 'custom-unit',
-    //     unit_plural: 'custom-unit'
-    //   },
-    //   ing_test: 'test-ingredient-5',
-    // },
+    }
   ];
 }
 
 function makeExpectedRecipe(recipe) {
   return {
     id: recipe.id,
+    user_id: recipe.user_id,
     name: recipe.name,
     author: recipe.author,
     instructions: recipe.instructions,
-    prep_time: recipe.prep_time,
+    prep_time_hours: recipe.prep_time_hours,
+    prep_time_minutes: recipe.prep_time_minutes,
     servings: recipe.servings,
-    date_created: recipe.date_created.toISOString()
+    date_created: recipe.date_created.toISOString(),
+  };
+}
+
+function makeNewRecipe(testUser, testUnits) {
+  return {
+    newRecipe: {
+      id: '',
+      user_id: testUser.id,
+      name: 'Test',
+      author: 'foobar',
+      prep_time_hours: 1,
+      prep_time_minutes: 1,
+      servings: 3,
+      instructions: 'Test do things test do things',
+      ingredients: {
+        ingredientsAddList: [
+          {
+            amount: 3,
+            ing_text: 'Test 1',
+            unit_set: testUnits[0].unit_set
+          }
+        ]
+      }
+    },
+    expectedRecipe: (recipe, id='') => {
+      const expected = {
+        ...this.recipe,
+        // date_created: recipe.date_created.toISOString(),
+      };
+
+      delete expected.ingredients;
+      expected.id = id;
+      return expected;
+    },
+  };
+}
+
+function makeUpdatedRecipe(recipe, testUnits) {
+  return {
+    id: recipe.id,
+    user_id: recipe.user_id,
+    name: `EDITED-${recipe.name}`,
+    author: `EDITED-${recipe.author}`,
+    prep_time_hours: recipe.prep_time_hours + 1,
+    prep_time_minutes: recipe.prep_time_minutes + 1,
+    servings: 9,
+    instructions: `EDITED-${recipe.instructions}`,
+    ingredients: {
+      ingredientsAddList: [
+        {
+          amount: 2,
+          ing_text: 'ADDED ingredient',
+          unit_set: testUnits[0].unit_set
+        }
+      ],
+      ingredientsEditList: [],
+      ingredientsDeleteList: [],
+    }
   };
 }
 
@@ -375,25 +228,20 @@ function makeExpectedRecipe(recipe) {
 function makeRecipesFixtures() {
   const testUsers = makeUsersArray();
   const testUnits = makeUnitsArray();
-  const testRecipes = makeRecipesArray(testUsers);
-  const testIngredients = makeIngredientsArray(testRecipes, testUnits);
+  const testRecipes = makeRecipesArray(testUsers[0]);
+  const testIngredients = testRecipes.map(recipe => makeIngredientsArray(recipe, testUnits));
   const testNewRecipe = makeNewRecipe(testUsers, testUnits, testIngredients);
-  return { testUsers, testUnits, testNewRecipe, testRecipes, testIngredients };
+  return { testUsers, testUnits, testRecipes, testIngredients, testNewRecipe };
 }
 
 
 function cleanTables(db) {
-  return db.transaction(trx =>
-    trx.raw(
-      `TRUNCATE
-        ingredients,
-        recipes,
-        units,
-        users
-        RESTART IDENTITY CASCADE;
-        `
-    )
-  );
+  return db.transaction(async trx => {
+    await trx.raw(`TRUNCATE ingredients RESTART IDENTITY CASCADE`)
+    await trx.raw(`TRUNCATE units RESTART IDENTITY CASCADE`)
+    await trx.raw(`TRUNCATE recipes RESTART IDENTITY CASCADE`)
+    await trx.raw(`TRUNCATE users RESTART IDENTITY CASCADE`)
+  });
 }
 
 function seedUsers(db, users) {
@@ -409,11 +257,23 @@ function seedUnits(db, units) {
 }
 
 function seedRecipesTables(db, users, units, recipes, ingredients) {
+
+  // console.log('db: ', db);
+  // console.log('users: ', users);
+  // console.log('units: ', units);
+  // console.log('recipes: ', recipes);
+  // console.log('ingredients', ingredients);
+
   return db.transaction(async trx => {
     await seedUsers(trx, users);
     await trx.into('units').insert(units);
     await trx.into('recipes').insert(recipes);
-    await trx.into('ingredients').insert(ingredients);
+
+    for (let i = 0; i < ingredients.length; i++) {
+      for (let j = 0; j < ingredients[i].length; j++) {
+        await trx.into('ingredients').insert(ingredients[i][j]);
+      }
+    }
   });
 }
 
@@ -443,7 +303,9 @@ module.exports = {
 
   //Fixtures
   seedUsers,
+  seedUnits,
   makeRecipesFixtures,
+  makeUpdatedRecipe,
 
   //XSS Testing
   // makeMaliciousRecipe,

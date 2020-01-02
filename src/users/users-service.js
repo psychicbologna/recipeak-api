@@ -63,7 +63,6 @@ const UsersService = {
   },
   
   getAllUserData(db, id) {
-    console.log(id);
     return db
       .from('users')
       .select('users.first_name', 'users.last_name', 'users.username')
@@ -72,7 +71,6 @@ const UsersService = {
   },
 
   getAllUserRecipes(db, userId) {
-    console.log(userId);
     return db
       .from('recipes as rec')
       .select('*')

@@ -18,9 +18,6 @@ recipesRouter
     const user_id = req.user.id;
     const { name, author, prep_time_hours, prep_time_minutes, servings, instructions, ingredients } = req.body;
 
-    console.log(author);
-    console.log(servings);
-
     let newRecipe = { name, instructions };
 
     for (const [key, value] of Object.entries(newRecipe)) {
@@ -44,7 +41,6 @@ recipesRouter
     };
 
     //In a future build, this should use trx to rollback the recipe if the ingredients fail.
-    console.log(user_id);
     RecipesService.insertRecipe(req.app.get('db'), RecipesService.serializeRecipe(newRecipe, user_id))
       .then(recipeId => {
         //Post recipe's ingredients.

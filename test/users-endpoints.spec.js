@@ -2,7 +2,8 @@ const knex = require('knex'),
   bcrypt = require('bcryptjs'),
   app = require('../src/app'),
   helpers = require('./test-helpers'),
-  config = require('../config');
+  config = require('../src/config');
+  
 describe('Users Endpoints', function () {
   let db;
 

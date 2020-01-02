@@ -6,6 +6,5 @@ CREATE TABLE IF NOT EXISTS users (
   last_name TEXT,
   username TEXT NOT NULL,
   date_created TIMESTAMP DEFAULT now() NOT NULL,
-  date_modified TIMESTAMP,
   password TEXT NOT NULL
 );

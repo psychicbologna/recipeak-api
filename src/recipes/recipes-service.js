@@ -8,13 +8,14 @@ const RecipesService = {
       .from('recipes AS rec')
       .select(
         'rec.id',
+        'rec.user_id',
         'rec.name',
         'rec.author',
         'rec.instructions',
-        'rec.prep_time',
+        'rec.prep_time_hours',
+        'rec.prep_time_minutes',
         'rec.servings',
         'rec.date_created',
-        'rec.date_modified',
       );
   },
   getById(db, id) {
@@ -30,7 +31,6 @@ const RecipesService = {
         'rec.instructions',
         'rec.servings',
         'rec.date_created',
-        'rec.date_modified'
       )
       .first();
 
@@ -60,21 +60,18 @@ const RecipesService = {
 
   serializeRecipe(recipe, userId) {
 
-    console.log(userId='');
-
     const newRecipe = {
-      id: recipe.id,
-      user_id: !userId ? recipe.user_id : userId,
+      user_id: recipe.user_id || userId,
       name: xss(recipe.name),
       author: xss(recipe.author),
       prep_time_hours: recipe.prep_time_hours,
       prep_time_minutes: recipe.prep_time_minutes,
       instructions: xss(recipe.instructions),
       servings: recipe.servings,
-      date_modified: new Date || null,
     };
 
-    console.log('final recipe b4 submission: ', newRecipe);
+    if (recipe.id) { newRecipe.id = recipe.id; }
+    if (recipe.date_created) { newRecipe.date_created = recipe.date_created; }
 
     return newRecipe;
   },

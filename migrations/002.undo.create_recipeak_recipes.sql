@@ -1,2 +1,6 @@
+BEGIN;
+
 DROP TABLE IF EXISTS
   recipes;
+
+COMMIT;

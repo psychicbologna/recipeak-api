@@ -7,12 +7,7 @@ const config = require('../src/config');
 describe('Auth Endpoints', function () {
   let db;
 
-  const {
-    testUsers,
-    testRecipes,
-    testUnits,
-    testIngredients
-  } = helpers.makeRecipesFixtures();
+  const { testUsers } = helpers.makeRecipesFixtures();
   const testUser = testUsers[0];
 
   before('make knex instance', () => {
@@ -81,10 +76,10 @@ describe('Auth Endpoints', function () {
     };
     const expectedToken = jwt.sign(
       { user_id: testUser.id }, // payload
-      process.env.JWT_SECRET,
+      config.JWT_SECRET,
       {
         subject: testUser.username,
-        expiresIn: process.env.JWT_EXPIRY,
+        expiresIn: config.JWT_EXPIRY,
         algorithm: 'HS256',
       }
     );
