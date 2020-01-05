@@ -37,36 +37,48 @@ Truncate Recipe Test DB `unseed:test` ----- this is alias for `psql -U recipeak 
 
 When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
 
-## Log
+## Documentation
 
-![Log Lady Does Not Judge](./loglady.gif)
+### api/users
 
-To update, `npm run devlog`
+Creates new users and retrieves data from existing users.
 
-### 2019-10-23
+#### POST /users
 
-- A lot of new paths are set. Recipe returning list of ingredients and units now in decent shape and sending. Picked out some fonts and colors and got some testing done to get a head start on backed-up progress.
+Create a new user.
 
-### 2019-10-18
+#### GET /users
 
-- Finally happy with data structure.
+Retrieve data from a user.
 
-### 2019-10-17
+### api/auth
 
-- Made a 'public' column on recipes and changed the GET /recipes route so that only public recipes will be displayed. Added users and relation to recipes, updated seeds. Sketching out authorization.
+Used for user authentication and session tokens. Generates an expiry token and ensures logout when user inactive.
 
-### 2019-10-16
+#### POST /auth/login
 
-- Migrating users in, kept separate from authors. Beginning to work in protected endpoints as well. Testing is working out okay. Interval function? Also added a log script to update README.md, will maybe add more for other sections of this file. //TODO //TODO //TODO
+Requests a JWT login token using a name and password.
 
-- It occurred to me this morning - users should be separate from authors, because you might want to put up recipes from outside sources!! Must keep this in mind - there should be a default option that makes the author the user, and another that allows you to enter an author name.
+### api/recipes
 
-- A long fight here with frontend. Started sketching out a bunch of the routes and some of the testing. Look forward to implementing the helpers and having valid tests for the endpoints. Ending the night by writing some scripts to expedite seeding/unseeding for faster migration testing. Running into some issues with testing not coming out as I wanted, but got some fixes done on it.
+Deals with recipe services. When a recipe is added, ingredients are added all together from a list. Further changes to these ingredients are also done in bulk when a recipe edit is submitted.
 
-### 2019-10-14
+#### GET /recipes
 
-Beginning to flesh out the server with all the basic installations and data structures. Running into an issue with postgres where the pg server isn't being read. Moving to client side for a few hours.
+#### POST /recipes
 
-This corrected itself...
+### api/recipes/:recipe_id
 
-Got brushed up on the INTERVAL data type [here](http://www.postgresqltutorial.com/postgresql-interval/).
+#### GET /recipes:recipe_id
+
+#### PATCH /recipes:recipe_id
+
+#### DELETE /recipes:recipe_id
+
+### /units
+
+Deals with unit services. Units are divided by class, then sets. Each unit has data that determines how it is organized and displayed, including single and plural forms and what units it can convert into. This is, in my opinion, the feature with the most exciting growth potential. It could scale into its own, more complex service in combination with /convert.
+
+### /convert
+
+Deals with unit conversion on ingredients. Generates new conversions when an ingredient is changed or added in frontend, allowing for dynamic updates.

@@ -1,3 +1,4 @@
 node_modules
 .env
 migrations_in_progress
+personal_log.md
