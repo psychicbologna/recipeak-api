@@ -9,11 +9,6 @@ const jsonBodyParser = express.json();
 
 recipesRouter
   .route('/')
-  .get((req, res, next) => {
-    RecipesService.getAllRecipes(req.app.get('db'))
-      .then(recipes => { res.json(recipes.map(RecipesService.serializeRecipe)); })
-      .catch(next);
-  })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const user_id = req.user.id;
     const { name, author, prep_time_hours, prep_time_minutes, servings, instructions, ingredients } = req.body;
@@ -40,7 +35,6 @@ recipesRouter
       servings
     };
 
-    //In a future build, this should use trx to rollback the recipe if the ingredients fail.
     RecipesService.insertRecipe(req.app.get('db'), RecipesService.serializeRecipe(newRecipe, user_id))
       .then(recipeId => {
         //Post recipe's ingredients.
@@ -57,7 +51,13 @@ recipesRouter
         return res.status(200).json(payload);
       })
       .catch(next);
+  })
+  .get((req, res, next) => {
+    RecipesService.getAllRecipes(req.app.get('db'))
+      .then(recipes => { res.json(recipes.map(RecipesService.serializeRecipe)); })
+      .catch(next);
   });
+
 
 recipesRouter
   .route('/:recipe_id')
