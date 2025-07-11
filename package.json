@@ -35,8 +35,8 @@
     "knex": "^0.19.5",
     "morgan": "^1.9.1",
     "pg": "^7.15.0",
-    "postgrator": "^3.11.0",
-    "postgrator-cli": "^3.3.0",
+    "postgrator": "^8.0.0",
+    "postgrator-cli": "^9.0.0",
     "uuid": "^3.3.3",
     "xss": "^1.0.6"
   },
